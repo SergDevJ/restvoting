@@ -68,6 +68,11 @@ public class GlobalControllerExceptionHandler {
         return logAndGetErrorInfo(req, e, ErrorType.WRONG_REQUEST);
     }
 
+    @ExceptionHandler(UserUpdateViolationException.class)
+    ResponseEntity<ErrorInfo> userUpdateViolation(HttpServletRequest req, UserUpdateViolationException e) {
+        return logAndGetErrorInfo(req, e, ErrorType.WRONG_REQUEST);
+    }
+
     @ExceptionHandler({DataIntegrityViolationException.class, PersistenceException.class})
     ResponseEntity<ErrorInfo> dataIntegrityViolation(HttpServletRequest req, Exception e) {
         String rootMessage = ValidationUtil.getRootCause(e).getMessage();
@@ -109,6 +114,4 @@ public class GlobalControllerExceptionHandler {
                 body(new ErrorInfo(req.getRequestURL(), messageSourceAccessor.getMessage(errorType.getErrorCode()),
                     details.length != 0 ? details : new String[] {ValidationUtil.getMessage(rootCause)}, errorType));
     }
-
-
 }

@@ -14,6 +14,7 @@ import org.springframework.util.Assert;
 import ru.ssk.restvoting.model.User;
 import ru.ssk.restvoting.repository.UserRepository;
 import ru.ssk.restvoting.util.exception.UserDeleteViolationException;
+import ru.ssk.restvoting.util.exception.UserUpdateViolationException;
 import ru.ssk.restvoting.web.user.AuthUser;
 
 import java.util.List;
@@ -26,8 +27,9 @@ import static ru.ssk.restvoting.util.ValidationUtil.checkNotFoundWithId;
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService implements UserDetailsService {
 
-    private final String CANT_DELETE_USER_MSG_CODE = "exception.user.cantDeleteHimself";
-    private final int ADMIN_USER_ID = 1000;
+    private final String CANT_DELETE_USER_MSG_CODE = "exception.user.cantDeleteUser";
+    private final String CANT_UPDATE_USER_MSG_CODE = "exception.user.cantUpdateUser";
+    private final int MAX_PREDEFINED_USER_ID = 1002;
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -52,8 +54,10 @@ public class UserService implements UserDetailsService {
     public void update(User user) {
         Assert.notNull(user, "User must not be null");
         Assert.notNull(user.getId(), "User id must not be null");
-        User original = userRepository.get(user.getId());
-        checkNotFoundWithId(original, user.getId());
+        int userId = user.getId();
+        checkUserUpdateRestrictions(userId);
+        User original = userRepository.get(userId);
+        checkNotFoundWithId(original, userId);
         user.setRoles(original.getRoles());
         userRepository.save(prepareToSave(user, passwordEncoder));
     }
@@ -70,8 +74,14 @@ public class UserService implements UserDetailsService {
     }
 
     private void checkUserDeleteRestrictions(int userId) {
-        if (userId == ADMIN_USER_ID) {
+        if (userId <= MAX_PREDEFINED_USER_ID) {
           throw new UserDeleteViolationException(messageSource.getMessage(CANT_DELETE_USER_MSG_CODE, null, LocaleContextHolder.getLocale()));
+        }
+    }
+
+    private void checkUserUpdateRestrictions(int userId) {
+        if (userId <= MAX_PREDEFINED_USER_ID) {
+            throw new UserUpdateViolationException(messageSource.getMessage(CANT_UPDATE_USER_MSG_CODE, null, LocaleContextHolder.getLocale()));
         }
     }
 
