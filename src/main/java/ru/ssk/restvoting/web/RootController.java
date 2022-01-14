@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.ssk.restvoting.service.RestaurantService;
-import ru.ssk.restvoting.system.Settings;
+import ru.ssk.restvoting.application.Settings;
 import ru.ssk.restvoting.util.SecurityUtil;
 
 @Controller

@@ -1,4 +1,4 @@
-package ru.ssk.restvoting.system;
+package ru.ssk.restvoting.application;
 
 import java.time.LocalTime;
 

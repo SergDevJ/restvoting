@@ -11,7 +11,7 @@ import ru.ssk.restvoting.model.Vote;
 import ru.ssk.restvoting.repository.RestaurantRepository;
 import ru.ssk.restvoting.repository.UserRepository;
 import ru.ssk.restvoting.repository.VoteRepository;
-import ru.ssk.restvoting.system.Settings;
+import ru.ssk.restvoting.application.Settings;
 import ru.ssk.restvoting.to.ProfileVotingHistoryTo;
 import ru.ssk.restvoting.util.SecurityUtil;
 import ru.ssk.restvoting.util.ValidationUtil;

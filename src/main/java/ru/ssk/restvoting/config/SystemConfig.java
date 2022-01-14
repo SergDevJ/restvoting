@@ -10,12 +10,12 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import ru.ssk.restvoting.system.Settings;
+import ru.ssk.restvoting.application.Settings;
 
 import java.time.LocalTime;
 
 @Configuration
-@PropertySource("classpath:system.properties")
+@PropertySource("classpath:application.properties")
 public class SystemConfig {
 
     @Value("#{T(java.time.LocalTime).parse('${system.voteLastTime:12:00}', T(java.time.format.DateTimeFormatter).ofPattern('HH:mm'))}")
