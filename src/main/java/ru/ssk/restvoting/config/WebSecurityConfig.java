@@ -15,17 +15,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import ru.ssk.restvoting.service.UserService;
 
-
 //https://stackoverflow.com/questions/33603156/spring-security-multiple-http-config-not-working
 //https://docs.spring.io/spring-security/site/docs/4.2.x/reference/htmlsingle/#multiple-httpsecurity
-
 
 @Configuration
 @EnableWebSecurity(debug=true)
 public class WebSecurityConfig {
-
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     public static class SpringSecurityInitializer extends AbstractSecurityWebApplicationInitializer {
     }
@@ -49,13 +46,13 @@ public class WebSecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.antMatcher("/rest/**").
-                sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().
-                httpBasic().and().
-                csrf().disable().
-                authorizeRequests().
-                antMatchers("/rest/admin/**").hasRole("ADMIN").
-                        antMatchers("/rest/profile/register").anonymous().
-                        antMatchers("/rest/**").authenticated();
+                    sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().
+                    httpBasic().and().
+                    csrf().disable().
+                    authorizeRequests().
+                    antMatchers("/rest/admin/**").hasRole("ADMIN").
+                    antMatchers("/rest/profile/register").anonymous().
+                    antMatchers("/rest/**").authenticated();
         }
     }
 
@@ -71,15 +68,13 @@ public class WebSecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.
-                authorizeRequests().antMatchers("/login", "/profile/register").permitAll().and().
-                authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN").and().
-                authorizeRequests().anyRequest().authenticated().and().
-                formLogin().loginPage("/login").permitAll().
-                defaultSuccessUrl("/").
-                failureUrl("/login?error=true").
-                loginProcessingUrl("/spring_security_check");
+            http.authorizeRequests().antMatchers("/login", "/profile/register").permitAll().and().
+                    authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN").and().
+                    authorizeRequests().anyRequest().authenticated().and().
+                    formLogin().loginPage("/login").permitAll().
+                    defaultSuccessUrl("/").
+                    failureUrl("/login?error=true").
+                    loginProcessingUrl("/spring_security_check");
         }
     }
-
 }

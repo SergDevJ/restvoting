@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service(value = "dishUtil")
+@Service
 public class DishUtil {
     private static DishRepository repository;
 
@@ -24,6 +24,4 @@ public class DishUtil {
         list.forEach(d -> result.put(d.getId(), d.getName()));
         return result;
     }
-
-
 }

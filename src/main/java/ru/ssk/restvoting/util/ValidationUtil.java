@@ -11,11 +11,9 @@ import ru.ssk.restvoting.util.exception.NotFoundException;
 import java.util.stream.Collectors;
 
 public class ValidationUtil {
+    private ValidationUtil() {}
 
-    private ValidationUtil() {
-    }
-
-    public static ResponseEntity<String> getErrorResponse (BindingResult result) {
+    public static ResponseEntity<String> getErrorResponse(BindingResult result) {
         return ResponseEntity.unprocessableEntity().body(result.getFieldErrors().stream().map(fe -> fe.getField() + " " + fe.getDefaultMessage()).
                 collect(Collectors.joining("<br>")));
     }
@@ -55,7 +53,6 @@ public class ValidationUtil {
         }
     }
 
-
     //  https://stackoverflow.com/a/65442410/548473
     @NonNull
     public static Throwable getRootCause(@NonNull Throwable t) {
@@ -66,5 +63,4 @@ public class ValidationUtil {
     public static String getMessage(Throwable e) {
         return e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getClass().getName();
     }
-
 }

@@ -9,7 +9,6 @@ import java.util.Collections;
 
 
 public class UserUtil {
-
     private UserUtil() {}
 
     public static User prepareToSave(User user, PasswordEncoder passwordEncoder) {
@@ -20,5 +19,4 @@ public class UserUtil {
         if (user.getRoles() == null || user.getRoles().isEmpty()) user.setRoles(Collections.singletonList(Role.USER));
         return user;
     }
-
 }

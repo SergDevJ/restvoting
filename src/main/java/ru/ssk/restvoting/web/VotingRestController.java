@@ -12,18 +12,15 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping(value = {"/voting", "/rest/voting"}, produces = MediaType.APPLICATION_JSON_VALUE)
 public class VotingRestController {
-
     private static final Logger log = LoggerFactory.getLogger(VotingRestController.class);
 
     @Autowired
-    VoteService voteService;
+    private VoteService voteService;
 
     @PostMapping(value = "/{restaurantId}")
     public void castVote(@PathVariable("restaurantId") int restaurantId,
-                         @RequestParam("voteDateTime") LocalDateTime voteDateTime)
-    {
+                         @RequestParam("voteDateTime") LocalDateTime voteDateTime) {
         log.info("cast vote with restaurantId={}", restaurantId);
         voteService.castVote(restaurantId, voteDateTime);
     }
-
 }

@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ssk.restvoting.model.MenuItem;
-import ru.ssk.restvoting.model.Restaurant;
 import ru.ssk.restvoting.to.MenuItemDisplay;
 import ru.ssk.restvoting.to.MenuItemTo;
 
@@ -17,15 +16,6 @@ public interface MenuDataJpaRepository extends JpaRepository<MenuItem, Integer> 
     @Transactional
     @Query("delete from MenuItem as m where m.id = :id")
     int delete(@Param("id") int id);
-
-    @Query("select m, d.name from MenuItem m join fetch m.dish d where m.id = :id")
-    MenuItem getWithDish(@Param("id") int id);
-
-    @Query("select m from MenuItem m join fetch m.dish d where m.date =:date and m.restaurant = :restaurant " +
-            "order by d.name")
-    List<MenuItem> getAllFiltered(@Param("restaurant") Restaurant rest,
-                                  @Param("date") java.sql.Date date);
-
 
     @Query(value = "select menu.id, dishes.id as dishId, dishes.name, dishes.weight, " +
             "CAST((menu.price) AS DECIMAL(10, 2)) / 100.0 as price " +

@@ -39,6 +39,4 @@ public class MenuRepository {
     public List<MenuItemDisplay> getMenuForDisplay(int restaurantId, java.sql.Date date) {
         return crudRepository.getMenuForDisplay(restaurantId, date);
     }
-
-
 }

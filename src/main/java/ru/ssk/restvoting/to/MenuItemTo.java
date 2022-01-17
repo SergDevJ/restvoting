@@ -21,5 +21,4 @@ public interface MenuItemTo extends HasId {
     @JsonGetter("date")
     Date getDate();
     void setDate(Date date);
-
 }

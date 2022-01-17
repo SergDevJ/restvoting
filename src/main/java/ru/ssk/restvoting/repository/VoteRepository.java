@@ -30,8 +30,4 @@ public class VoteRepository {
     public List<ProfileVotingHistoryTo> getVotingHistory(int userId, Date startDate, Date endDate) {
         return crudRepository.getVotingHistory(userId, startDate, endDate);
     }
-
-
-
-
 }

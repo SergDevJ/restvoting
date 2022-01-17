@@ -10,10 +10,7 @@ import ru.ssk.restvoting.model.User;
 
 @Transactional(readOnly = true)
 public interface UserDataJpaRepository extends JpaRepository<User, Integer> {
-
     User getByEmail(String email);
-
-    User getByName(String name);
 
     @Transactional
     @Modifying
@@ -22,5 +19,4 @@ public interface UserDataJpaRepository extends JpaRepository<User, Integer> {
 
     @Query("select u from User u where trim(upper(u.name)) = trim(upper(:name))")
     User getUserByNameCaseInsensitive(@Param("name") String name);
-
 }

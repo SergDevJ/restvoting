@@ -1,10 +1,8 @@
 package ru.ssk.restvoting.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 import ru.ssk.restvoting.model.User;
 import ru.ssk.restvoting.model.Vote;
 import ru.ssk.restvoting.to.ProfileVotingHistoryTo;
@@ -15,11 +13,6 @@ import java.util.Optional;
 
 
 public interface VoteDataJpaRepository extends JpaRepository<Vote, Integer> {
-    @Query("delete from Vote v where v.user.id = :user_id and v.date = :date")
-    @Modifying
-    @Transactional
-    int deleteByUserAndDate(@Param("user_id") int userId, @Param("date") Date date);
-
     @Query(value = "select restaurants.name as restaurantName, votes.vote_date as voteDate " +
             "from votes inner join restaurants on votes.restaurant_id = restaurants.id " +
             "where votes.user_id = :user_id and vote_date between :start_date and :end_date " +
@@ -30,5 +23,4 @@ public interface VoteDataJpaRepository extends JpaRepository<Vote, Integer> {
 
     @Query("select v from Vote v where v.user = :user and v.date = :date")
     Optional<Vote> findByUserAndDate(@Param("user") User user, @Param("date") Date date);
-
 }

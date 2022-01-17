@@ -20,7 +20,6 @@ public enum ErrorType {
     public String getErrorCode() {
         return errorCode;
     }
-
     public HttpStatus getStatus() {
         return status;
     }

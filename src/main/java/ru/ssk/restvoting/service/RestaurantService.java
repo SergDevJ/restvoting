@@ -14,7 +14,7 @@ import java.util.List;
 import static ru.ssk.restvoting.util.ValidationUtil.checkNew;
 import static ru.ssk.restvoting.util.ValidationUtil.checkNotFoundWithId;
 
-@Service("RestaurantService")
+@Service
 public class RestaurantService {
     private final RestaurantRepository repository;
 
@@ -54,5 +54,4 @@ public class RestaurantService {
     public List<RestaurantVoteTo> getRestaurantsWithUserVote(int userId, Date voteDate) {
         return repository.getRestaurantsWithUserVote(userId, voteDate);
     }
-
 }

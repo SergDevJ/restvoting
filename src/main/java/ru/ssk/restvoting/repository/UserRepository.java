@@ -41,12 +41,7 @@ public class UserRepository {
         return crudRepository.getByEmail(email);
     }
 
-    public User getByName(String name) {
-        return crudRepository.getByName(name);
-    }
-
     public User getReference(int id) {
         return crudRepository.getById(id);
     }
-
 }

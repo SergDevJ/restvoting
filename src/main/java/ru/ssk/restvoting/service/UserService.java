@@ -23,10 +23,9 @@ import static ru.ssk.restvoting.util.UserUtil.prepareToSave;
 import static ru.ssk.restvoting.util.ValidationUtil.checkNew;
 import static ru.ssk.restvoting.util.ValidationUtil.checkNotFoundWithId;
 
-@Service("userService")
+@Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService implements UserDetailsService {
-
     private final String CANT_DELETE_USER_MSG_CODE = "exception.user.cantDeleteUser";
     private final String CANT_UPDATE_USER_MSG_CODE = "exception.user.cantUpdateUser";
     private final int MAX_PREDEFINED_USER_ID = 1002;
@@ -34,7 +33,6 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ReloadableResourceBundleMessageSource messageSource;
-
 
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, ReloadableResourceBundleMessageSource messageSource) {

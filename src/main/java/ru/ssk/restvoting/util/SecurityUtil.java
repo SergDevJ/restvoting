@@ -8,7 +8,6 @@ import ru.ssk.restvoting.web.user.AuthUser;
 import java.util.Objects;
 
 public class SecurityUtil {
-
     private SecurityUtil() {}
 
     public static AuthUser getAuthUser() {
@@ -31,5 +30,4 @@ public class SecurityUtil {
         Objects.requireNonNull(user, "No authenticated user");
         return user.getRoles().contains(Role.ADMIN);
     }
-
 }

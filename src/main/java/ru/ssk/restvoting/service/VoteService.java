@@ -24,7 +24,7 @@ import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
-@Service("voteService")
+@Service
 public class VoteService {
     private final String TOO_LATE_VOTE_MSG_CODE = "exception.tooLateVote";
     private final String INVALID_VOTE_DATE_MSG_CODE = "exception.invalidVoteDate";
@@ -40,7 +40,6 @@ public class VoteService {
     private final ReloadableResourceBundleMessageSource messageSource;
     private final Settings systemSettings;
 
-
     @Autowired
     public VoteService(VoteRepository voteRepository, UserRepository userRepository,
                        RestaurantRepository restaurantRepository,
@@ -52,7 +51,6 @@ public class VoteService {
         this.messageSource = messageSource;
         this.systemSettings = systemSettings;
     }
-
 
     @Transactional
     public void castVote(int restaurantId, LocalDateTime voteDateTime) {
@@ -72,7 +70,7 @@ public class VoteService {
         if (findVote != null) {
             LocalTime voteLastTime = systemSettings.getVoteLastTime();
             if (voteDateTime.toLocalTime().isAfter(voteLastTime)) {
-                String msg = messageSource.getMessage(TOO_LATE_VOTE_MSG_CODE, new Object[] {voteLastTime.toString()}, "Voting is not possible after {0}",
+                String msg = messageSource.getMessage(TOO_LATE_VOTE_MSG_CODE, new Object[]{voteLastTime.toString()}, "Voting is not possible after {0}",
                         LocaleContextHolder.getLocale());
                 throw new TooLateVoteException(msg);
             }

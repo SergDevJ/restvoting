@@ -2,8 +2,6 @@ package ru.ssk.restvoting.config;
 
 
 import org.apache.tomcat.jdbc.pool.PoolProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -25,7 +23,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -38,100 +38,94 @@ import java.util.Properties;
         "ru.ssk.restvoting.util"})
 @EnableJpaRepositories(basePackages = {"ru.ssk.restvoting.repository"})
 
-
 public class DataJpaConfig {
-    private static Logger logger = LoggerFactory.getLogger(DataJpaConfig.class);
-
     @Autowired
     private Environment env;
-
 
     @Profile("hsqldb")
     @Bean("dataSource")
     public javax.sql.DataSource hsqldbDataSource() {
+        DriverManagerDataSource dataSource = new org.springframework.jdbc.datasource.DriverManagerDataSource();
+        Properties props = new Properties();
         try {
-            DriverManagerDataSource dataSource = new org.springframework.jdbc.datasource.DriverManagerDataSource();
-            Properties props = new Properties();
             props.load(new FileInputStream(new ClassPathResource("db/hsqldb.properties").getFile()));
-            dataSource.setDriverClassName(props.getProperty("database.driverClassName"));
-            dataSource.setUrl(props.getProperty("database.url"));
-            dataSource.setUsername(props.getProperty("database.username"));
-            dataSource.setPassword(props.getProperty("database.password"));
-
-            // schema init
-            //https://stackoverflow.com/questions/38040572/spring-boot-loading-initial-data/38047021#38047021
-            Resource initSchema = new ClassPathResource("db/initDB_hsql.sql");
-            Resource initData = new ClassPathResource("db/populateDB.sql");
-            ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator(initSchema, initData);
-            databasePopulator.setSqlScriptEncoding("UTF-8");
-            DatabasePopulatorUtils.execute(databasePopulator, dataSource);
-            return dataSource;
-        } catch (Exception е) {
-            logger.error("HSQLDB datasource bean cannot be created!", е);
-            return null;
+        } catch (IOException e) {
+            throw new IllegalStateException("Error creating HSQLDB datasource", e);
         }
-    }
+        dataSource.setDriverClassName(props.getProperty("database.driverClassName"));
+        dataSource.setUrl(props.getProperty("database.url"));
+        dataSource.setUsername(props.getProperty("database.username"));
+        dataSource.setPassword(props.getProperty("database.password"));
 
+        // schema init
+        //https://stackoverflow.com/questions/38040572/spring-boot-loading-initial-data/38047021#38047021
+        Resource initSchema = new ClassPathResource("db/initDB_hsql.sql");
+        Resource initData = new ClassPathResource("db/populateDB.sql");
+        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator(initSchema, initData);
+        databasePopulator.setSqlScriptEncoding("UTF-8");
+        DatabasePopulatorUtils.execute(databasePopulator, dataSource);
+        return dataSource;
+    }
 
     @Profile("postgres")
     @Bean("dataSource")
     public javax.sql.DataSource postgresDataSource() {
+        PoolProperties poolProperties = new org.apache.tomcat.jdbc.pool.PoolProperties();
+        Properties props = new Properties();
         try {
-            PoolProperties poolProperties = new org.apache.tomcat.jdbc.pool.PoolProperties();
-            Properties props = new Properties();
             props.load(new FileInputStream(new ClassPathResource("db/postgres.properties").getFile()));
-            poolProperties.setDriverClassName(props.getProperty("database.driverClassName"));
-            poolProperties.setUrl(props.getProperty("database.url"));
-            poolProperties.setUsername(props.getProperty("database.username"));
-            poolProperties.setPassword(props.getProperty("database.password"));
-            org.apache.tomcat.jdbc.pool.DataSource dataSource = new org.apache.tomcat.jdbc.pool.DataSource(poolProperties);
-            dataSource.setPoolProperties(poolProperties);
-
-            // schema init
-            //https://stackoverflow.com/questions/38040572/spring-boot-loading-initial-data/38047021#38047021
-            Resource initSchema = new ClassPathResource("db/initDB.sql");
-            Resource initData = new ClassPathResource("db/populateDB.sql");
-            ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator(initSchema, initData);
-            databasePopulator.setSqlScriptEncoding("UTF-8");
-            DatabasePopulatorUtils.execute(databasePopulator, dataSource);
-            return dataSource;
-        } catch (Exception е) {
-            logger.error("Postgresql datasource bean cannot be created!", е);
-            return null;
+        } catch (IOException e) {
+            throw new IllegalStateException("Error creating Postgres datasource", e);
         }
+        poolProperties.setDriverClassName(props.getProperty("database.driverClassName"));
+        poolProperties.setUrl(props.getProperty("database.url"));
+        poolProperties.setUsername(props.getProperty("database.username"));
+        poolProperties.setPassword(props.getProperty("database.password"));
+        org.apache.tomcat.jdbc.pool.DataSource dataSource = new org.apache.tomcat.jdbc.pool.DataSource(poolProperties);
+        dataSource.setPoolProperties(poolProperties);
+
+        // schema init
+        //https://stackoverflow.com/questions/38040572/spring-boot-loading-initial-data/38047021#38047021
+        Resource initSchema = new ClassPathResource("db/initDB.sql");
+        Resource initData = new ClassPathResource("db/populateDB.sql");
+        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator(initSchema, initData);
+        databasePopulator.setSqlScriptEncoding("UTF-8");
+        DatabasePopulatorUtils.execute(databasePopulator, dataSource);
+        return dataSource;
     }
 
     @Profile("heroku")
     @Bean("dataSource")
     public javax.sql.DataSource herokuPostgresDataSource() {
+        URI dbUri;
         try {
-            URI dbUri = new URI(System.getenv("DATABASE_URL"));
-            String username = dbUri.getUserInfo().split(":")[0];
-            String password = dbUri.getUserInfo().split(":")[1];
-            String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-
-            PoolProperties poolProperties = new org.apache.tomcat.jdbc.pool.PoolProperties();
-            poolProperties.setDriverClassName("org.postgresql.Driver");
-            poolProperties.setUrl(dbUrl);
-            poolProperties.setUsername(username);
-            poolProperties.setPassword(password);
-            poolProperties.setRemoveAbandoned(true);
-            poolProperties.setValidationQuery("SELECT 1");
-            poolProperties.setMaxActive(10);
-            poolProperties.setMinIdle(2);
-            poolProperties.setMaxWait(20000);
-            poolProperties.setInitialSize(2);
-            poolProperties.setMaxIdle(5);
-            poolProperties.setTestOnBorrow(true);
-            poolProperties.setTestOnConnect(true);
-            poolProperties.setTestWhileIdle(true);
-            org.apache.tomcat.jdbc.pool.DataSource dataSource = new org.apache.tomcat.jdbc.pool.DataSource(poolProperties);
-            dataSource.setPoolProperties(poolProperties);
-            return dataSource;
-        } catch (Exception е) {
-            logger.error("Heroku Postgresql datasource bean cannot be created!", е);
-            return null;
+            dbUri = new URI(System.getenv("DATABASE_URL"));
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException("Error creating Heroku Postgresql datasource.", e);
         }
+
+        String username = dbUri.getUserInfo().split(":")[0];
+        String password = dbUri.getUserInfo().split(":")[1];
+        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+
+        PoolProperties poolProperties = new org.apache.tomcat.jdbc.pool.PoolProperties();
+        poolProperties.setDriverClassName("org.postgresql.Driver");
+        poolProperties.setUrl(dbUrl);
+        poolProperties.setUsername(username);
+        poolProperties.setPassword(password);
+        poolProperties.setRemoveAbandoned(true);
+        poolProperties.setValidationQuery("SELECT 1");
+        poolProperties.setMaxActive(10);
+        poolProperties.setMinIdle(2);
+        poolProperties.setMaxWait(20000);
+        poolProperties.setInitialSize(2);
+        poolProperties.setMaxIdle(5);
+        poolProperties.setTestOnBorrow(true);
+        poolProperties.setTestOnConnect(true);
+        poolProperties.setTestWhileIdle(true);
+        org.apache.tomcat.jdbc.pool.DataSource dataSource = new org.apache.tomcat.jdbc.pool.DataSource(poolProperties);
+        dataSource.setPoolProperties(poolProperties);
+        return dataSource;
     }
 
     @Bean
@@ -143,7 +137,6 @@ public class DataJpaConfig {
     JpaVendorAdapter jpaVendorAdapter() {
         return new HibernateJpaVendorAdapter();
     }
-
 
     @Bean
     public Properties hibernateProperties() {
@@ -181,8 +174,7 @@ public class DataJpaConfig {
     @Bean
     @Autowired
     public EntityManagerFactory entityManagerFactory(javax.sql.DataSource dataSource,
-        Properties hibernateProperties, JpaVendorAdapter jpaVendorAdapter)
-    {
+            Properties hibernateProperties, JpaVendorAdapter jpaVendorAdapter) {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setPackagesToScan("ru.ssk.restvoting.model");
         factoryBean.setDataSource(dataSource);

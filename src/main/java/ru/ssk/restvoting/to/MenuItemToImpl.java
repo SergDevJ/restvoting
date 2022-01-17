@@ -5,7 +5,8 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
-public class MenuItemToImpl extends BaseTo implements MenuItemTo {
+public class MenuItemToImpl implements MenuItemTo {
+    private Integer id;
 
     @NotNull
     private Integer restaurantId;
@@ -20,11 +21,21 @@ public class MenuItemToImpl extends BaseTo implements MenuItemTo {
     @NotNull
     private Float price;
 
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public MenuItemToImpl() {
     }
 
     public MenuItemToImpl(Integer id, Integer restaurantId, Date date, Integer dishId, Float price) {
-        super(id);
+        this.id = id;
         this.restaurantId = restaurantId;
         this.date = date;
         this.dishId = dishId;

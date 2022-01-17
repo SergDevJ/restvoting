@@ -12,7 +12,7 @@ import static ru.ssk.restvoting.util.ValidationUtil.checkNew;
 import static ru.ssk.restvoting.util.ValidationUtil.checkNotFoundWithId;
 
 
-@Service(value = "dishService")
+@Service
 public class DishService {
     private final DishRepository repository;
 
@@ -23,7 +23,6 @@ public class DishService {
     public List<Dish> getAll() {
         return repository.getAll();
     }
-
 
     public Dish get(int id) {
         return checkNotFoundWithId(repository.get(id), id);
@@ -44,6 +43,4 @@ public class DishService {
     public void delete(int id) {
         checkNotFoundWithId(repository.delete(id), id);
     }
-
-
 }

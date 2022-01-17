@@ -32,6 +32,4 @@ public class JsonUtil {
             throw new IllegalStateException("Invalid write to JSON:\n'" + value + "'", e);
         }
     }
-
-
 }

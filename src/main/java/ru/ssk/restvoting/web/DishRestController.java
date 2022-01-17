@@ -22,11 +22,10 @@ import static ru.ssk.restvoting.util.ValidationUtil.assureIdConsistent;
 public class DishRestController {
     static final String URL = "/admin/dishes";
     static final String REST_URL = "/rest/admin/dishes";
-
     private Logger log = LoggerFactory.getLogger(DishRestController.class);
 
     @Autowired
-    DishService service;
+    private DishService service;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -67,5 +66,4 @@ public class DishRestController {
         log.info("delete with id={}", id);
         service.delete(id);
     }
-
 }

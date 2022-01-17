@@ -28,11 +28,10 @@ public class RestaurantRestController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    RestaurantService service;
+    private RestaurantService service;
 
     @Autowired
-    MenuService menuService;
-
+    private MenuService menuService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -51,12 +50,11 @@ public class RestaurantRestController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable("id") Integer id,
-                @Valid @RequestBody Restaurant restaurant) {
+                       @Valid @RequestBody Restaurant restaurant) {
         log.info("update {} with id={}", restaurant, id);
         ValidationUtil.assureIdConsistent(restaurant, id);
         service.update(restaurant);
     }
-
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {

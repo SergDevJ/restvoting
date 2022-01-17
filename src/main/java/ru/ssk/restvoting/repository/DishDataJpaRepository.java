@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.ssk.restvoting.model.Dish;
 
 public interface DishDataJpaRepository extends JpaRepository<Dish, Integer> {
-
     @Modifying
     @Transactional
     @Query("delete from Dish d where d.id = :id")

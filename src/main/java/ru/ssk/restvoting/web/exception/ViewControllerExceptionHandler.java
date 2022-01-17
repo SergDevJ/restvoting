@@ -17,13 +17,11 @@ import java.util.Map;
 @ControllerAdvice
 public class ViewControllerExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(ViewControllerExceptionHandler.class);
-
     private final MessageSourceAccessor messageSourceAccessor;
 
     public ViewControllerExceptionHandler(@Autowired MessageSourceAccessor messageSourceAccessor) {
         this.messageSourceAccessor = messageSourceAccessor;
     }
-
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public ModelAndView wrongRequest(HttpServletRequest req, NoHandlerFoundException e) {
@@ -34,7 +32,6 @@ public class ViewControllerExceptionHandler {
     public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) {
         return logAndGetExceptionView(req, e, ErrorType.APP_ERROR);
     }
-
 
     private ModelAndView logAndGetExceptionView(HttpServletRequest req, Exception e, ErrorType errorType) {
         Throwable rootCause = ValidationUtil.getRootCause(e);

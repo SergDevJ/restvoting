@@ -36,5 +36,4 @@ public class DishRepository {
     public List<Dish> getAll() {
         return crudRepository.findAll(SORT_NAME);
     }
-
 }

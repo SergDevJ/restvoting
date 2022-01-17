@@ -29,7 +29,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping(value = {ProfileRestController.URL, ProfileRestController.REST_URL},
-    produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProfileRestController {
     private static final Logger log = LoggerFactory.getLogger(ProfileRestController.class);
     static final String URL = "/profile";
@@ -48,7 +48,6 @@ public class ProfileRestController {
     protected void initBinder(WebDataBinder binder) {
         binder.addValidators(userValidator);
     }
-
 
     @GetMapping(value = "/authuser")
     @ResponseStatus(HttpStatus.OK)
@@ -70,8 +69,7 @@ public class ProfileRestController {
 
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createWithLocation(
-            @Validated({ValidationGroup.Password.class, Default.class}) @RequestBody User user)
-    {
+            @Validated({ValidationGroup.Password.class, Default.class}) @RequestBody User user) {
         User created = userService.create(user);
         log.info("create {} with id={}", created, created.getId());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -80,12 +78,10 @@ public class ProfileRestController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(
-            @Validated({ValidationGroup.Password.class, Default.class}) @RequestBody User user)
-    {
+            @Validated({ValidationGroup.Password.class, Default.class}) @RequestBody User user) {
         int authUserId = SecurityUtil.getAuthUserId();
         log.info("update {} with id={}", user, authUserId);
         ValidationUtil.assureIdConsistent(user, authUserId);
@@ -99,7 +95,4 @@ public class ProfileRestController {
         log.info("delete with id={}", authUserId);
         userService.delete(authUserId);
     }
-
-
-
 }

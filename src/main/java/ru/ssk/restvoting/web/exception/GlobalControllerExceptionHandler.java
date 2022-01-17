@@ -25,7 +25,6 @@ import java.util.Map;
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
 public class GlobalControllerExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
-
     private final MessageSourceAccessor messageSourceAccessor;
 
     public static final String EXCEPTION_DUPLICATE_USER_NAME = "exception.user.duplicateName";

@@ -21,7 +21,7 @@ public class MenuRestController {
     private static final Logger log = LoggerFactory.getLogger(MenuRestController.class);
 
     @Autowired
-    MenuService service;
+    private MenuService service;
 
     @GetMapping(value = "/voting/{restaurantId}")
     @ResponseStatus(HttpStatus.OK)
@@ -34,7 +34,7 @@ public class MenuRestController {
     @GetMapping(value = "/history/{restaurantId}")
     @ResponseStatus(HttpStatus.OK)
     public List<MenuItemDisplay> getMenuHistory(@PathVariable("restaurantId") int id,
-                                         @RequestParam(value = "date") Date date) {
+                                                @RequestParam(value = "date") Date date) {
         log.info("get menu history for restaurant with id={} and date={}", id, date);
         return service.getMenu(id, date);
     }

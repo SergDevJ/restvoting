@@ -50,7 +50,6 @@ public class MenuAdminRestController {
     public ResponseEntity<MenuItem> createWithLocation(@Valid @RequestBody MenuItemToImpl menu) {
         MenuItem created = service.create(menu);
         log.info("create {} with id={}", created, created.getId());
-
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -63,5 +62,4 @@ public class MenuAdminRestController {
         log.info("delete with id={}", id);
         service.delete(id);
     }
-
 }

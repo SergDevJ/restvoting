@@ -1,7 +1,6 @@
 package ru.ssk.restvoting.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -9,19 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.ssk.restvoting.service.RestaurantService;
-import ru.ssk.restvoting.application.Settings;
 import ru.ssk.restvoting.util.SecurityUtil;
 
 @Controller
 public class RootController {
     @Autowired
     private RestaurantService restaurantService;
-
-    @Autowired
-    MessageSourceAccessor messageSourceAccessor;
-
-    @Autowired
-    Settings systemSettings;
 
     @GetMapping("/")
     public String root() {
@@ -48,9 +40,8 @@ public class RootController {
         return "login";
     }
 
-    @PostMapping ("/logout")
-    public String logout()
-    {
+    @PostMapping("/logout")
+    public String logout() {
         return "login";
     }
 
@@ -64,6 +55,4 @@ public class RootController {
     public String profile() {
         return "profile";
     }
-
-
 }

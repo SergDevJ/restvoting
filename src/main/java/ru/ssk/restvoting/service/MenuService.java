@@ -16,7 +16,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 
-@Service("menuService")
+@Service
 public class MenuService {
     private final MenuRepository repository;
     private final RestaurantRepository restaurantRepository;
@@ -28,7 +28,6 @@ public class MenuService {
         this.restaurantRepository = restaurantRepository;
         this.dishRepository = dishRepository;
     }
-
 
     @Cacheable("votingMenu")
     public List<MenuItemDisplay> getMenuForVoting(int restaurantId, Date date) {
@@ -56,7 +55,6 @@ public class MenuService {
         MenuItem menuItem = createFromMenuItemTo(menuItemTo);
         return repository.save(menuItem);
     }
-
 
     private MenuItem createFromMenuItemTo(MenuItemTo menuItemTo) {
         Objects.requireNonNull(menuItemTo);

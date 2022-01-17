@@ -20,12 +20,10 @@ public class Restaurant extends AbstractEmailEntity {
     @Column(name = "address", nullable = false, unique = true)
     private String address;
 
-
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @JsonIgnore
     private List<Vote> votes;
-
 
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant") //, cascade = CascadeType.ALL)

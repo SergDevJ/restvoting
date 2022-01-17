@@ -32,7 +32,6 @@ public class WebAppInit extends AbstractAnnotationConfigDispatcherServletInitial
             dbProfile = properties.getProperty(ACTIVE_PROFILE_DB_KEY, ACTIVE_PROFILE_DB_DEFAULT_VALUE);
             servletContext.setInitParameter("spring.profiles.active", dbProfile);
             log.info("Set active profile to '{}'", dbProfile);
-
         } catch (IOException e) {
             servletContext.setInitParameter("spring.profiles.active", ACTIVE_PROFILE_DB_DEFAULT_VALUE);
             log.error("Error reading 'application.properties' file. Active profile set to default");
@@ -62,7 +61,6 @@ public class WebAppInit extends AbstractAnnotationConfigDispatcherServletInitial
         return new Filter[] {encodingFilter};
     }
 
-
     //https://www.logicbig.com/how-to/spring-mvc/spring-customizing-default-error-resolver.html
     @Override
     protected FrameworkServlet createDispatcherServlet (WebApplicationContext wac) {
@@ -70,6 +68,4 @@ public class WebAppInit extends AbstractAnnotationConfigDispatcherServletInitial
         ds.setThrowExceptionIfNoHandlerFound(true);
         return ds;
     }
-
-
 }

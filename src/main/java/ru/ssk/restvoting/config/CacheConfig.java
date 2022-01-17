@@ -1,7 +1,5 @@
 package ru.ssk.restvoting.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.jcache.JCacheCacheManager;
@@ -20,7 +18,6 @@ public class CacheConfig {
     @Autowired
     private ApplicationContext context;
 
-    private final Logger log = LoggerFactory.getLogger(CacheConfig.class);
     private final String ehcacheXmlPath = "classpath:cache/ehcache.xml";
 
     @Bean
@@ -29,21 +26,19 @@ public class CacheConfig {
         JCacheCacheManager jCacheCacheManager = new JCacheCacheManager();
         jCacheCacheManager.setCacheManager(cacheManagerFactoryBean.getObject());
         return jCacheCacheManager;
-
     }
 
     @Bean
     JCacheManagerFactoryBean cacheManagerFactoryBean() {
         JCacheManagerFactoryBean cmfb = new JCacheManagerFactoryBean();
         Resource resource = context.getResource(ehcacheXmlPath);
-        URI resourceUri = null;
+        URI resourceUri;
         try {
             resourceUri = resource.getURI();
         } catch (IOException e) {
-            log.error(String.format("Error creating cacheManager URI from resource '%s'", ehcacheXmlPath), e);
+            throw new IllegalStateException(String.format("Error creating cacheManager URI from resource '%s'", ehcacheXmlPath), e);
         }
         cmfb.setCacheManagerUri(resourceUri);
         return cmfb;
     }
-
 }

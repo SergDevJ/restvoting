@@ -16,9 +16,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class RestaurantRepository {
     private final RestaurantDataJpaRepository crudRepository;
-    private final Sort SORT_NAME = Sort.by(Sort.Direction.ASC, "name");
     private final Sort SORT_EMAIL = Sort.by(Sort.Direction.ASC, "email");
-
 
     public RestaurantRepository(@Autowired RestaurantDataJpaRepository crudRepository) {
         this.crudRepository = crudRepository;
