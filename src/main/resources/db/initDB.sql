@@ -37,7 +37,7 @@ CREATE TABLE dishes
     name VARCHAR(100) NOT NULL,
     weight INTEGER NOT NULL
 );
-CREATE UNIQUE INDEX dishes_unique_name_idx ON dishes (name);
+CREATE UNIQUE INDEX dishes_unique_name_weight_idx ON dishes (name, weight);
 
 
 CREATE TABLE menu

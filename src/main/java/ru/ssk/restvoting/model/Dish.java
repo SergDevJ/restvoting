@@ -34,5 +34,4 @@ public class Dish extends AbstractNamedEntity {
                 ", weight=" + weight +
                 '}';
     }
-
 }

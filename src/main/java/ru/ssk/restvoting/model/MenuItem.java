@@ -1,21 +1,16 @@
 package ru.ssk.restvoting.model;
 
-import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Entity
 @Table(name = "menu")
 public class MenuItem extends AbstractBaseEntity {
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     private Restaurant restaurant;
 
@@ -72,9 +67,9 @@ public class MenuItem extends AbstractBaseEntity {
     public String toString() {
         return "Menu{" +
                 "id=" + id +
-                ", restaurant=" + restaurant +
+                ", restaurant=" + restaurant.getId() +
                 ", date=" + date +
-                ", dish=" + dish +
+                ", dish=" + dish.getId() +
                 ", price=" + price +
                 '}';
     }

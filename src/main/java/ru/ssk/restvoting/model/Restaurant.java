@@ -3,7 +3,6 @@ package ru.ssk.restvoting.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -26,9 +25,7 @@ public class Restaurant extends AbstractEmailEntity {
     private List<Vote> votes;
 
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant") //, cascade = CascadeType.ALL)
-    @OrderBy("dish")
-    @Where(clause = "menu_date = CURRENT_DATE")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @JsonIgnore
     private List<MenuItem> menu;
 

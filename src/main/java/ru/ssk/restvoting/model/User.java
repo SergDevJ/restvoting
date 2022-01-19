@@ -18,7 +18,6 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User extends AbstractEmailEntity {
-
     @NotBlank
     @Size(min = 4, max = 15, groups = ValidationGroup.Password.class)
     @Size(min = 4, max = 100, groups = ValidationGroup.Persist.class)
@@ -33,7 +32,6 @@ public class User extends AbstractEmailEntity {
     @BatchSize(size = 100)
     @Column(name = "role")
     @JoinColumn(name = "user_id") //https://stackoverflow.com/a/62848296/548473
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Set<Role> roles;
 

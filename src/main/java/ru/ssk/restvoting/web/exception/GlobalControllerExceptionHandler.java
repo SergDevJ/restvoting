@@ -29,7 +29,7 @@ public class GlobalControllerExceptionHandler {
 
     public static final String EXCEPTION_DUPLICATE_USER_NAME = "exception.user.duplicateName";
     public static final String EXCEPTION_DUPLICATE_USER_EMAIL = "exception.user.duplicateEmail";
-    public static final String EXCEPTION_DUPLICATE_DISH_NAME = "exception.dish.duplicateName";
+    public static final String EXCEPTION_DUPLICATE_DISH_NAME_WEIGHT = "exception.dish.duplicateNameWeight";
     public static final String EXCEPTION_DUPLICATE_RESTAURANT_NAME = "exception.restaurant.duplicateName";
     public static final String EXCEPTION_DUPLICATE_RESTAURANT_ADDRESS = "exception.restaurant.duplicateAddress";
     public static final String EXCEPTION_DUPLICATE_RESTAURANT_EMAIL = "exception.restaurant.duplicateEmail";
@@ -40,7 +40,7 @@ public class GlobalControllerExceptionHandler {
     private static final Map<String, String> CONSTRAINTS_MSG = Map.of(
             "users_unique_name_idx", EXCEPTION_DUPLICATE_USER_NAME,
             "users_unique_email_idx", EXCEPTION_DUPLICATE_USER_EMAIL,
-            "dishes_unique_name_idx", EXCEPTION_DUPLICATE_DISH_NAME,
+            "dishes_unique_name_weight_idx", EXCEPTION_DUPLICATE_DISH_NAME_WEIGHT,
             "restaurants_unique_name_idx", EXCEPTION_DUPLICATE_RESTAURANT_NAME,
             "restaurants_address_idx", EXCEPTION_DUPLICATE_RESTAURANT_ADDRESS,
             "restaurants_email_idx", EXCEPTION_DUPLICATE_RESTAURANT_EMAIL,
