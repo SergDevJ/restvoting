@@ -21,6 +21,9 @@ public class MenuItem extends AbstractBaseEntity {
     public Restaurant getRestaurant() {
         return restaurant;
     }
+    public Integer getRestaurantId() {
+        return restaurant.getId();
+    }
 
     public Date getDate() {
         return date;
@@ -46,6 +49,9 @@ public class MenuItem extends AbstractBaseEntity {
 
     public Dish getDish() {
         return dish;
+    }
+    public Integer getDishId() {
+        return dish.getId();
     }
 
     public void setDish(Dish dish) {

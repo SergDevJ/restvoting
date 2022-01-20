@@ -11,7 +11,6 @@ import ru.ssk.restvoting.MenuTestData;
 import ru.ssk.restvoting.model.MenuItem;
 import ru.ssk.restvoting.to.MenuItemDisplay;
 import ru.ssk.restvoting.to.MenuItemTo;
-import ru.ssk.restvoting.to.MenuItemToImpl;
 import ru.ssk.restvoting.util.exception.IllegalRequestDataException;
 import ru.ssk.restvoting.util.exception.NotFoundException;
 
@@ -26,7 +25,6 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MenuServiceTest extends AbstractTest {
-
     @Autowired
     private ApplicationContext context;
 
@@ -36,7 +34,6 @@ class MenuServiceTest extends AbstractTest {
     public void init() {
         menuService = context.getBean(MenuService.class);
     }
-
 
     @Test
     void getTodayMenu() {
@@ -56,8 +53,8 @@ class MenuServiceTest extends AbstractTest {
 
     @Test
     void getTo() {
-        MenuItemTo actual = menuService.getTo(MenuTestData.TODAY_MENU_ITEM1_ID);
-        assertThat(actual).usingRecursiveComparison().isEqualTo(MenuTestData.todayMenuItem1);
+        MenuItemTo actual = menuService.getTo(MenuTestData.MENU_ITEM1_ID);
+        assertThat(actual).usingRecursiveComparison().isEqualTo(MenuTestData.menuItemTo);
     }
 
     @Test
@@ -70,7 +67,7 @@ class MenuServiceTest extends AbstractTest {
         MenuItemTo updated = MenuTestData.getUpdated();
         menuService.update(updated);
         MenuItemTo mi = menuService.getTo(updated.getId());
-        MenuItemTo actual = new MenuItemToImpl(mi.getId(), mi.getRestaurantId(), mi.getDate(), mi.getDishId(), mi.getPrice());
+        MenuItemTo actual = new MenuItemTo(mi.getId(), mi.getRestaurantId(), mi.getDate(), mi.getDishId(), mi.getPrice());
         assertThat(actual).usingRecursiveComparison().isEqualTo(updated);
     }
 
@@ -104,10 +101,10 @@ class MenuServiceTest extends AbstractTest {
 
     @Test
     void createWithException() {
-        Assertions.assertThrows(PersistenceException.class, () -> menuService.create(MenuTestData.doubleNewMenuItemTo));
-        validateCause(SQLIntegrityConstraintViolationException.class, "menu_unique_rest_date_dish_idx", () -> menuService.create(MenuTestData.doubleNewMenuItemTo));
-        Assertions.assertThrows(IllegalRequestDataException.class, () -> menuService.create(MenuTestData.menuItemTo));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> menuService.create(new MenuItemToImpl(MenuTestData.RESTAURANT_ID, null, null, 100F)));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> menuService.create(new MenuItemToImpl(null, null, MenuTestData.DISH_ID, 100F)));
+        Assertions.assertThrows(PersistenceException.class, () -> menuService.create(MenuTestData.doubleNewTodayMenuItemTo));
+        validateCause(SQLIntegrityConstraintViolationException.class, "menu_unique_rest_date_dish_idx", () -> menuService.create(MenuTestData.doubleNewTodayMenuItemTo));
+        Assertions.assertThrows(IllegalRequestDataException.class, () -> menuService.create(MenuTestData.todayMenuItemTo));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> menuService.create(new MenuItemTo(MenuTestData.RESTAURANT_ID, null, null, 100F)));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> menuService.create(new MenuItemTo(null, null, MenuTestData.DISH_ID, 100F)));
     }
 }

@@ -21,5 +21,4 @@ public class RestaurantTestData {
     public static Restaurant getUpdated() {
         return new Restaurant(RESTAURANT1_ID, "Обновленный ресторан", "updated@yandex.ru", "г.Новосибирск");
     }
-
 }

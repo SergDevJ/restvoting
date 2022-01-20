@@ -3,7 +3,6 @@ package ru.ssk.restvoting;
 import ru.ssk.restvoting.model.Dish;
 import ru.ssk.restvoting.model.Restaurant;
 import ru.ssk.restvoting.to.MenuItemTo;
-import ru.ssk.restvoting.to.MenuItemToImpl;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -20,9 +19,9 @@ public class MenuTestData {
     public static final int DISH_ID = START_SEQ;
     private static final Date MENU_DATE = Date.valueOf(LocalDate.now());
 
-
-    public static final MenuItemTo menuItemTo = new MenuItemToImpl(START_SEQ, RESTAURANT_ID, MENU_DATE, DISH_ID, 500F);
-    public static final MenuItemTo doubleNewMenuItemTo = new MenuItemToImpl(RESTAURANT_ID, MENU_DATE, DISH_ID, 500F);
+    public static final MenuItemTo todayMenuItemTo = new MenuItemTo(START_SEQ, RESTAURANT_ID, MENU_DATE, DISH_ID, 500F);
+    public static final MenuItemTo doubleNewTodayMenuItemTo = new MenuItemTo(RESTAURANT_ID, MENU_DATE, DISH_ID, 500F);
+    public static final MenuItemTo menuItemTo = new MenuItemTo(START_SEQ, RESTAURANT_ID, Date.valueOf("2021-05-01"), DISH_ID + 1, 100F);
 
     public static final MenuItemDisplayImpl todayMenuItem1 = new MenuItemDisplayImpl(TODAY_MENU_ITEM1_ID, "Дичь", 300, 500F);
     public static final MenuItemDisplayImpl todayMenuItem2 = new MenuItemDisplayImpl(TODAY_MENU_ITEM1_ID + 1, "Борщ", 250, 150.33F);
@@ -35,23 +34,20 @@ public class MenuTestData {
     public static final MenuItemDisplayImpl menuItem3 = new MenuItemDisplayImpl(MENU_ITEM1_ID + 2, "Икра", 50, 2000.5F);
     public static final List<MenuItemDisplayImpl> anyDateMenu = List.of(menuItem2, menuItem1, menuItem3);
 
-
-
     public static MenuItemTo getNew() {
-        return new MenuItemToImpl(null, RESTAURANT_ID, MENU_DATE, START_SEQ + 3, 150.5F);
+        return new MenuItemTo(null, RESTAURANT_ID, MENU_DATE, START_SEQ + 3, 150.5F);
     }
 
     public static MenuItemTo createToFromMenuItem(Integer id, Restaurant restaurant, Date date, Dish dish, int price) {
-        return new MenuItemToImpl(id, restaurant.getId(), date, dish.getId(), price/100F);
+        return new MenuItemTo(id, restaurant.getId(), date, dish.getId(), price/100F);
 
     }
 
     public static MenuItemTo getUpdated() {
-        return new MenuItemToImpl(MENU_ITEM1_ID, menuItemTo.getRestaurantId(), menuItemTo.getDate(), menuItemTo.getDishId() + 3, menuItemTo.getPrice() + 5.55F);
+        return new MenuItemTo(MENU_ITEM1_ID, todayMenuItemTo.getRestaurantId(), todayMenuItemTo.getDate(), todayMenuItemTo.getDishId() + 3, todayMenuItemTo.getPrice() + 5.55F);
     }
 
     public static MenuItemTo getDuplicatedDish() {
-        return new MenuItemToImpl(MENU_ITEM1_ID, RESTAURANT_ID, MENU_DATE, START_SEQ + 1, 100F);
+        return new MenuItemTo(MENU_ITEM1_ID, RESTAURANT_ID, MENU_DATE, START_SEQ + 1, 100F);
     }
-
 }

@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ssk.restvoting.model.MenuItem;
 import ru.ssk.restvoting.to.MenuItemDisplay;
-import ru.ssk.restvoting.to.MenuItemTo;
 
 import java.util.List;
 
@@ -24,10 +23,4 @@ public interface MenuDataJpaRepository extends JpaRepository<MenuItem, Integer> 
             "order by dishes.name", nativeQuery = true)
     List<MenuItemDisplay> getMenuForDisplay(@Param("restaurantId") int restaurantId,
                                             @Param("date") java.sql.Date date);
-
-    @Query(value = "select menu.id, menu.restaurant_id as restaurantId, menu.menu_date as date, " +
-            "menu.dish_id as dishId, " +
-            "CAST((menu.price) AS DECIMAL(10, 2)) / 100.0 as price " +
-            "from menu where menu.id =:id", nativeQuery = true)
-    MenuItemTo getTo(@Param("id") int id);
 }

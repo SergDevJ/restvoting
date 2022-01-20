@@ -5,7 +5,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Repository;
 import ru.ssk.restvoting.model.MenuItem;
 import ru.ssk.restvoting.to.MenuItemDisplay;
-import ru.ssk.restvoting.to.MenuItemTo;
 
 import java.util.List;
 
@@ -20,10 +19,6 @@ public class MenuRepository {
 
     public MenuItem get(int id) {
         return crudRepository.findById(id).orElse(null);
-    }
-
-    public MenuItemTo getTo(int id) {
-        return crudRepository.getTo(id);
     }
 
     @CacheEvict(value = "votingMenu", allEntries = true)

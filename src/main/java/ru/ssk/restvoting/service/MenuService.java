@@ -10,6 +10,7 @@ import ru.ssk.restvoting.repository.MenuRepository;
 import ru.ssk.restvoting.repository.RestaurantRepository;
 import ru.ssk.restvoting.to.MenuItemDisplay;
 import ru.ssk.restvoting.to.MenuItemTo;
+import ru.ssk.restvoting.util.MenuUtil;
 import ru.ssk.restvoting.util.ValidationUtil;
 
 import java.sql.Date;
@@ -39,7 +40,7 @@ public class MenuService {
     }
 
     public MenuItemTo getTo(int id) {
-        return ValidationUtil.checkNotFoundWithId(repository.getTo(id), id);
+        return ValidationUtil.checkNotFoundWithId(MenuUtil.asTo(repository.get(id)), id);
     }
 
     public void update(MenuItemTo menuItemTo) {
