@@ -18,5 +18,5 @@ public interface UserDataJpaRepository extends JpaRepository<User, Integer> {
     int delete(@Param("id") int id);
 
     @Query("select u from User u where trim(upper(u.name)) = trim(upper(:name))")
-    User getUserByNameCaseInsensitive(@Param("name") String name);
+    User getByNameCaseInsensitive(@Param("name") String name);
 }

@@ -16,13 +16,13 @@ import java.util.List;
 public class Restaurant extends AbstractEmailEntity {
     @NotBlank
     @Size(min = 2, max = 255)
-    @Column(name = "address", nullable = false, unique = true)
+    @Column(name = "address")
     private String address;
 
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    @JsonIgnore
-    private List<Vote> votes;
+//    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+//    @JsonIgnore
+//    private List<Vote> votes;
 
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
@@ -51,5 +51,15 @@ public class Restaurant extends AbstractEmailEntity {
     public Restaurant(Integer id, String name, String email, String address) {
         super(id, name, email);
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "id=" + id +
+                ", name='" + name +
+                ", email='" + email +
+                ", address='" + address +
+                '}';
     }
 }

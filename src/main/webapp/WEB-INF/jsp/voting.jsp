@@ -32,7 +32,7 @@
         <jsp:useBean id="restaurant" type="ru.ssk.restvoting.to.RestaurantVoteTo"/>
         <tr>
           <input type="hidden" name="id" value="${restaurant.id}">
-          <td><input type="radio" name="vote" onclick="enableVoteButton();" value="${restaurant.id}" <c:if test="${restaurant.voted}">checked</c:if>/> </td>
+          <td><input type="radio" name="vote" onclick="enableVoteButton();" value="${restaurant.id}" <c:if test="${restaurant.isVoted()}">checked</c:if>/> </td>
           <td><c:out value="${restaurant.name}"/></td>
           <td><a href="mailto:${restaurant.email}">${restaurant.email}</a></td>
           <td>${restaurant.address}</td>

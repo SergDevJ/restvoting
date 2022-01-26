@@ -1,46 +1,50 @@
 package ru.ssk.restvoting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import ru.ssk.restvoting.repository.DishRepository;
 import ru.ssk.restvoting.model.Dish;
+import ru.ssk.restvoting.repository.DishDataJpaRepository;
 
 import java.util.List;
 
-import static ru.ssk.restvoting.util.ValidationUtil.checkNew;
 import static ru.ssk.restvoting.util.ValidationUtil.checkNotFoundWithId;
 
 
 @Service
 public class DishService {
-    private final DishRepository repository;
+    private final DishDataJpaRepository crudRepository;
+    private final Sort SORT_NAME = Sort.by("name");
 
-    public DishService(@Autowired DishRepository repository) {
-        this.repository = repository;
+    public DishService(@Autowired DishDataJpaRepository crudRepository) {
+        this.crudRepository = crudRepository;
     }
 
     public List<Dish> getAll() {
-        return repository.getAll();
+        return crudRepository.findAll(SORT_NAME);
     }
 
     public Dish get(int id) {
-        return checkNotFoundWithId(repository.get(id), id);
+        return checkNotFoundWithId(crudRepository.findById(id).orElse(null), id);
     }
 
     public void update(Dish dish) {
         Assert.notNull(dish, "Dish must not be null");
         Assert.notNull(dish.getId(), "Dish id must not be null");
-        checkNotFoundWithId(repository.save(dish), dish.getId());
+        checkNotFoundWithId(crudRepository.save(dish), dish.getId());
     }
 
     public Dish create(Dish dish) {
         Assert.notNull(dish, "Dish must not be null");
-        checkNew(dish);
-        return repository.save(dish);
+        return crudRepository.save(dish);
     }
 
     public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id), id);
+        checkNotFoundWithId(crudRepository.delete(id), id);
+    }
+
+    public Dish getReference(Integer id) {
+        return crudRepository.getById(id);
     }
 }

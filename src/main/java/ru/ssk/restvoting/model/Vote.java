@@ -8,16 +8,16 @@ import java.sql.Date;
 @Table(name = "votes")
 public class Vote extends AbstractBaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     @NotNull
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id", nullable = false)
+    @JoinColumn(name = "restaurant_id")
     @NotNull
     private Restaurant restaurant;
 
-    @Column(name = "vote_date", nullable = false)
+    @Column(name = "vote_date")
     @NotNull
     private java.sql.Date date;
 

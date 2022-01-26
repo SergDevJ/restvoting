@@ -11,6 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.ssk.restvoting.model.MenuItem;
 import ru.ssk.restvoting.service.MenuService;
 import ru.ssk.restvoting.to.MenuItemTo;
+import ru.ssk.restvoting.util.ValidationUtil;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -39,15 +40,16 @@ public class MenuAdminRestController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable("id") Integer id,
-                       @Valid @RequestBody MenuItemTo menu) {
-        log.info("update {} with id={}", menu, id);
-        assureIdConsistent(menu, id);
-        service.update(menu);
+                       @Valid @RequestBody MenuItemTo menuItemTo) {
+        log.info("update {} with id={}", menuItemTo, id);
+        assureIdConsistent(menuItemTo, id);
+        service.update(menuItemTo);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MenuItem> createWithLocation(@Valid @RequestBody MenuItemTo menu) {
-        MenuItem created = service.create(menu);
+    public ResponseEntity<MenuItem> createWithLocation(@Valid @RequestBody MenuItemTo menuItemTo) {
+        ValidationUtil.checkNew(menuItemTo);
+        MenuItem created = service.create(menuItemTo);
         log.info("create {} with id={}", created, created.getId());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")

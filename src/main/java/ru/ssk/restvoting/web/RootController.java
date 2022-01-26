@@ -27,7 +27,7 @@ public class RootController {
     @GetMapping("/voting")
     public String voting(Model model) {
         model.addAttribute("restaurants",
-                restaurantService.getRestaurantsWithUserVote(SecurityUtil.getAuthUserId()));
+                restaurantService.getAllWithUserVote(SecurityUtil.getAuthUserId()));
         return "voting";
     }
 

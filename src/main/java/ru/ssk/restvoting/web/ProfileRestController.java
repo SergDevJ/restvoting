@@ -27,6 +27,8 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 
+import static ru.ssk.restvoting.util.ValidationUtil.checkNew;
+
 @RestController
 @RequestMapping(value = {ProfileRestController.URL, ProfileRestController.REST_URL},
         produces = MediaType.APPLICATION_JSON_VALUE)
@@ -70,6 +72,7 @@ public class ProfileRestController {
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createWithLocation(
             @Validated({ValidationGroup.Password.class, Default.class}) @RequestBody User user) {
+        checkNew(user);
         User created = userService.create(user);
         log.info("create {} with id={}", created, created.getId());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()

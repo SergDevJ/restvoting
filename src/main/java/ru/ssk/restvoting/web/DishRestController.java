@@ -16,6 +16,7 @@ import java.net.URI;
 import java.util.List;
 
 import static ru.ssk.restvoting.util.ValidationUtil.assureIdConsistent;
+import static ru.ssk.restvoting.util.ValidationUtil.checkNew;
 
 @RestController
 @RequestMapping(value = {DishRestController.URL, DishRestController.REST_URL}, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -51,6 +52,7 @@ public class DishRestController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Dish> createWithLocation(@Valid @RequestBody Dish dish) {
+        checkNew(dish);
         log.info("creating {}", dish);
         Dish created = service.create(dish);
         log.info("created {} with id={}", created, created.getId());

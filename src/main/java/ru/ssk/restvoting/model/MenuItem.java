@@ -10,11 +10,11 @@ import java.sql.Date;
 @Table(name = "menu")
 public class MenuItem extends AbstractBaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id", nullable = false)
+    @JoinColumn(name = "restaurant_id")
     @NotNull
     private Restaurant restaurant;
 
-    @Column(name ="menu_date", nullable = false)
+    @Column(name ="menu_date")
     @NotNull
     private java.sql.Date date;
 
@@ -34,7 +34,7 @@ public class MenuItem extends AbstractBaseEntity {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dish_id", nullable = false)
+    @JoinColumn(name = "dish_id")
     @NotNull
     private Dish dish;
 

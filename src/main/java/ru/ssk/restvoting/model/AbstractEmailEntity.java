@@ -14,8 +14,8 @@ public abstract class AbstractEmailEntity extends AbstractNamedEntity {
     @Email
     @NotBlank
     @Size(min = 7, max = 70)
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @Column(name = "email")
+    protected String email;
 
     public String getEmail() {
         return email;

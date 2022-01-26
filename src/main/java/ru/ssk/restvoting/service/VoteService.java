@@ -5,13 +5,11 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.ssk.restvoting.application.Settings;
 import ru.ssk.restvoting.model.Restaurant;
 import ru.ssk.restvoting.model.User;
 import ru.ssk.restvoting.model.Vote;
-import ru.ssk.restvoting.repository.RestaurantRepository;
-import ru.ssk.restvoting.repository.UserRepository;
-import ru.ssk.restvoting.repository.VoteRepository;
-import ru.ssk.restvoting.application.Settings;
+import ru.ssk.restvoting.repository.VoteDataJpaRepository;
 import ru.ssk.restvoting.to.ProfileVotingHistoryTo;
 import ru.ssk.restvoting.util.SecurityUtil;
 import ru.ssk.restvoting.util.ValidationUtil;
@@ -34,20 +32,20 @@ public class VoteService {
     public static final String FILTER_DEFAULT_START_DATE = "1900-01-01";
     public static final String FILTER_DEFAULT_END_DATE = "2100-01-01";
 
-    private final VoteRepository voteRepository;
-    private final UserRepository userRepository;
-    private final RestaurantRepository restaurantRepository;
+    private final VoteDataJpaRepository crudRepository;
+    private final UserService userService;
+    private final RestaurantService restaurantService;
     private final ReloadableResourceBundleMessageSource messageSource;
     private final Settings systemSettings;
 
     @Autowired
-    public VoteService(VoteRepository voteRepository, UserRepository userRepository,
-                       RestaurantRepository restaurantRepository,
+    public VoteService(VoteDataJpaRepository crudRepository, UserService userService,
+                       RestaurantService restaurantService,
                        ReloadableResourceBundleMessageSource messageSource,
                        Settings systemSettings) {
-        this.voteRepository = voteRepository;
-        this.userRepository = userRepository;
-        this.restaurantRepository = restaurantRepository;
+        this.crudRepository = crudRepository;
+        this.userService = userService;
+        this.restaurantService = restaurantService;
         this.messageSource = messageSource;
         this.systemSettings = systemSettings;
     }
@@ -64,9 +62,9 @@ public class VoteService {
             throw new IllegalRequestDataException(msg);
         }
 
-        User user = ValidationUtil.checkNotFoundWithId(userRepository.getReference(SecurityUtil.getAuthUserId()), SecurityUtil.getAuthUserId());
-        Restaurant restaurant = ValidationUtil.checkNotFoundWithId(restaurantRepository.getReference(restaurantId), restaurantId);
-        Vote findVote = voteRepository.findByUserAndDate(user, Date.valueOf(voteDateTime.toLocalDate())).orElse(null);
+        User user = ValidationUtil.checkNotFoundWithId(userService.getReference(SecurityUtil.getAuthUserId()), SecurityUtil.getAuthUserId());
+        Restaurant restaurant = ValidationUtil.checkNotFoundWithId(restaurantService.getReference(restaurantId), restaurantId);
+        Vote findVote = crudRepository.findByUserAndDate(user, Date.valueOf(voteDateTime.toLocalDate())).orElse(null);
         if (findVote != null) {
             LocalTime voteLastTime = systemSettings.getVoteLastTime();
             if (voteDateTime.toLocalTime().isAfter(voteLastTime)) {
@@ -75,10 +73,10 @@ public class VoteService {
                 throw new TooLateVoteException(msg);
             }
             findVote.setRestaurant(restaurant);
-            voteRepository.save(findVote);
+            crudRepository.save(findVote);
         } else {
             Vote vote = new Vote(user, restaurant, Date.valueOf(voteDateTime.toLocalDate()));
-            voteRepository.save(vote);
+            crudRepository.save(vote);
         }
     }
 
@@ -86,7 +84,6 @@ public class VoteService {
         int userId = SecurityUtil.getAuthUserId();
         if (startDate == null) startDate = Date.valueOf(FILTER_DEFAULT_START_DATE);
         if (endDate == null) endDate = Date.valueOf(FILTER_DEFAULT_END_DATE);
-        return voteRepository.getVotingHistory(userId, startDate, endDate);
+        return crudRepository.getVotingHistory(userId, startDate, endDate);
     }
-
 }

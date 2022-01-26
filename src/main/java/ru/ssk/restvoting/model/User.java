@@ -21,7 +21,7 @@ public class User extends AbstractEmailEntity {
     @NotBlank
     @Size(min = 4, max = 15, groups = ValidationGroup.Password.class)
     @Size(min = 4, max = 100, groups = ValidationGroup.Persist.class)
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
@@ -68,5 +68,15 @@ public class User extends AbstractEmailEntity {
 
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name +
+                ", email='" + email +
+                ", roles=" + roles +
+                '}';
     }
 }

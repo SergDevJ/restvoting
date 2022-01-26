@@ -37,7 +37,7 @@ class MenuServiceTest extends AbstractTest {
 
     @Test
     void getTodayMenu() {
-        List<MenuItemDisplay> actual = menuService.getMenu(MenuTestData.RESTAURANT_ID, Date.valueOf(LocalDate.now())).stream().
+        List<MenuItemDisplay> actual = menuService.getAll(MenuTestData.RESTAURANT_ID, Date.valueOf(LocalDate.now())).stream().
                 map(mi -> new MenuItemDisplayImpl(mi.getId(), mi.getName(), mi.getWeight(), mi.getPrice())).
                 collect(Collectors.toList());
         assertThat(actual).usingFieldByFieldElementComparator().containsExactlyElementsOf(MenuTestData.todayMenu);
@@ -45,7 +45,7 @@ class MenuServiceTest extends AbstractTest {
 
     @Test
     void getMenuHistory() {
-        List<MenuItemDisplay> actual = menuService.getMenu(MenuTestData.RESTAURANT_ID, java.sql.Date.valueOf("2021-05-01")).stream().
+        List<MenuItemDisplay> actual = menuService.getAll(MenuTestData.RESTAURANT_ID, java.sql.Date.valueOf("2021-05-01")).stream().
                 map(mi -> new MenuItemDisplayImpl(mi.getId(), mi.getName(), mi.getWeight(), mi.getPrice())).
                 collect(Collectors.toList());
         assertThat(actual).usingFieldByFieldElementComparator().containsExactlyElementsOf(MenuTestData.anyDateMenu);

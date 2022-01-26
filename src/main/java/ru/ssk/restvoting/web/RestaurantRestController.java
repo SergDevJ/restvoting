@@ -19,6 +19,8 @@ import java.net.URI;
 import java.sql.Date;
 import java.util.List;
 
+import static ru.ssk.restvoting.util.ValidationUtil.checkNew;
+
 @RestController
 @RequestMapping(value = {RestaurantRestController.URL, RestaurantRestController.REST_URL},
         produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -58,6 +60,7 @@ public class RestaurantRestController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {
+        checkNew(restaurant);
         Restaurant created = service.create(restaurant);
         log.info("create {} with id={}", created, created.getId());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -78,6 +81,6 @@ public class RestaurantRestController {
     public List<MenuItemDisplay> getTodayMenu(@PathVariable("id") int id,
                                               @RequestParam("date") Date date) {
         log.info("getTodayMenu id={}", id);
-        return menuService.getMenu(id, date);
+        return menuService.getAll(id, date);
     }
 }

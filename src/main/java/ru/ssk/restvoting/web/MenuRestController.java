@@ -28,7 +28,7 @@ public class MenuRestController {
     public List<MenuItemDisplay> getMenuForVoting(@PathVariable("restaurantId") int id,
                                                   @RequestParam("date") Date date) {
         log.info("get menu for restaurant with id={}", id);
-        return service.getMenuForVoting(id, date);
+        return service.getAllForVoting(id, date);
     }
 
     @GetMapping(value = "/history/{restaurantId}")
@@ -36,7 +36,7 @@ public class MenuRestController {
     public List<MenuItemDisplay> getMenuHistory(@PathVariable("restaurantId") int id,
                                                 @RequestParam(value = "date") Date date) {
         log.info("get menu history for restaurant with id={} and date={}", id, date);
-        return service.getMenu(id, date);
+        return service.getAll(id, date);
     }
 
 }

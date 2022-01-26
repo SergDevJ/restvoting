@@ -1,13 +1,12 @@
 package ru.ssk.restvoting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.ssk.restvoting.model.MenuItem;
-import ru.ssk.restvoting.repository.DishRepository;
-import ru.ssk.restvoting.repository.MenuRepository;
-import ru.ssk.restvoting.repository.RestaurantRepository;
+import ru.ssk.restvoting.repository.MenuDataJpaRepository;
 import ru.ssk.restvoting.to.MenuItemDisplay;
 import ru.ssk.restvoting.to.MenuItemTo;
 import ru.ssk.restvoting.util.MenuUtil;
@@ -19,54 +18,61 @@ import java.util.Objects;
 
 @Service
 public class MenuService {
-    private final MenuRepository repository;
-    private final RestaurantRepository restaurantRepository;
-    private final DishRepository dishRepository;
+    private final MenuDataJpaRepository crudRepository;
+    private final RestaurantService restaurantService;
+    private final DishService dishService;
 
     @Autowired
-    public MenuService(MenuRepository repository, RestaurantRepository restaurantRepository, DishRepository dishRepository) {
-        this.repository = repository;
-        this.restaurantRepository = restaurantRepository;
-        this.dishRepository = dishRepository;
+    public MenuService(MenuDataJpaRepository crudRepository, RestaurantService restaurantService, DishService dishService) {
+        this.crudRepository = crudRepository;
+        this.restaurantService = restaurantService;
+        this.dishService = dishService;
     }
 
     @Cacheable("votingMenu")
-    public List<MenuItemDisplay> getMenuForVoting(int restaurantId, Date date) {
-        return repository.getMenuForDisplay(restaurantId, date);
+    public List<MenuItemDisplay> getAllForVoting(int restaurantId, Date date) {
+        return crudRepository.getAllForDisplay(restaurantId, date);
     }
 
-    public List<MenuItemDisplay> getMenu(int restaurantId, Date date) {
-        return repository.getMenuForDisplay(restaurantId, date);
+    public List<MenuItemDisplay> getAll(int restaurantId, Date date) {
+        return crudRepository.getAllForDisplay(restaurantId, date);
+    }
+
+    public MenuItem get(int id) {
+        return crudRepository.findById(id).orElse(null);
     }
 
     public MenuItemTo getTo(int id) {
-        return ValidationUtil.checkNotFoundWithId(MenuUtil.asTo(repository.get(id)), id);
+        return ValidationUtil.checkNotFoundWithId(MenuUtil.asTo(crudRepository.findById(id).orElse(null)), id);
     }
 
+    @CacheEvict(value = "votingMenu", allEntries = true)
     public void update(MenuItemTo menuItemTo) {
         Assert.notNull(menuItemTo, "Menu item must not be null");
         Assert.notNull(menuItemTo.getId(), "Menu item id must not be null");
         MenuItem menuItem = createFromMenuItemTo(menuItemTo);
-        repository.save(menuItem);
+        crudRepository.save(menuItem);
     }
 
+    @CacheEvict(value = "votingMenu", allEntries = true)
     public MenuItem create(MenuItemTo menuItemTo) {
         Assert.notNull(menuItemTo, "Menu item must not be null");
-        ValidationUtil.checkNew(menuItemTo);
         MenuItem menuItem = createFromMenuItemTo(menuItemTo);
-        return repository.save(menuItem);
+        return crudRepository.save(menuItem);
     }
 
     private MenuItem createFromMenuItemTo(MenuItemTo menuItemTo) {
         Objects.requireNonNull(menuItemTo);
         return new MenuItem(menuItemTo.getId(),
-                restaurantRepository.getReference(menuItemTo.getRestaurantId()),
+                restaurantService.getReference(menuItemTo.getRestaurantId()),
                 menuItemTo.getDate(),
-                dishRepository.getReference(menuItemTo.getDishId()),
+                dishService.getReference(menuItemTo.getDishId()),
                 (int) (menuItemTo.getPrice() * 100));
     }
 
+    @CacheEvict(value = "votingMenu", allEntries = true)
     public void delete(int id) {
-        ValidationUtil.checkNotFoundWithId(repository.delete(id), id);
+        ValidationUtil.checkNotFoundWithId(crudRepository.delete(id) != 0, id);
     }
+
 }
