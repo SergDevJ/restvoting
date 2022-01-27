@@ -7,8 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.ssk.restvoting.service.VoteService;
 
-import java.time.LocalDateTime;
-
 @RestController
 @RequestMapping(value = {"/voting", "/rest/voting"}, produces = MediaType.APPLICATION_JSON_VALUE)
 public class VotingRestController {
@@ -18,9 +16,8 @@ public class VotingRestController {
     private VoteService voteService;
 
     @PostMapping(value = "/{restaurantId}")
-    public void castVote(@PathVariable("restaurantId") int restaurantId,
-                         @RequestParam("voteDateTime") LocalDateTime voteDateTime) {
-        log.info("cast vote with restaurantId={}", restaurantId);
-        voteService.castVote(restaurantId, voteDateTime);
+    public void vote(@PathVariable("restaurantId") int restaurantId) {
+        log.info("vote with restaurantId={}", restaurantId);
+        voteService.vote(restaurantId);
     }
 }

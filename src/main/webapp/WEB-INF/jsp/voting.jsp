@@ -13,7 +13,7 @@
 <div class="jumbotron pt-4">
   <div class="container">
     <h3 class="text-center"><spring:message code="restaurant.voting"/></h3>
-    <button class="btn btn-primary" onclick="castVote()" id="voteBtn">
+    <button class="btn btn-primary" onclick="vote()" id="voteBtn">
       <span class="fa fa-check"></span>
       <spring:message code="restaurant.vote"/>
     </button>

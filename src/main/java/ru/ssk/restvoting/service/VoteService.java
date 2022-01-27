@@ -12,22 +12,16 @@ import ru.ssk.restvoting.model.Vote;
 import ru.ssk.restvoting.repository.VoteDataJpaRepository;
 import ru.ssk.restvoting.to.ProfileVotingHistoryTo;
 import ru.ssk.restvoting.util.SecurityUtil;
-import ru.ssk.restvoting.util.ValidationUtil;
-import ru.ssk.restvoting.util.exception.IllegalRequestDataException;
 import ru.ssk.restvoting.util.exception.TooLateVoteException;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 @Service
 public class VoteService {
     private final String TOO_LATE_VOTE_MSG_CODE = "exception.tooLateVote";
-    private final String INVALID_VOTE_DATE_MSG_CODE = "exception.invalidVoteDate";
-
-    private final long MAX_VOTE_TIME_OFFSET = 24 * 60 * 60 - 1;
 
     public static final String FILTER_DEFAULT_START_DATE = "1900-01-01";
     public static final String FILTER_DEFAULT_END_DATE = "2100-01-01";
@@ -51,19 +45,10 @@ public class VoteService {
     }
 
     @Transactional
-    public void castVote(int restaurantId, LocalDateTime voteDateTime) {
-        //maximum time difference between the application server time
-        //and voting time should be no more than 24 hours
-        long currentTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
-        long voteTime = voteDateTime.toEpochSecond(ZoneOffset.UTC);
-        if (Math.abs(currentTime - voteTime) > MAX_VOTE_TIME_OFFSET) {
-            String msg = messageSource.getMessage(INVALID_VOTE_DATE_MSG_CODE, null, "Validation error",
-                    LocaleContextHolder.getLocale());
-            throw new IllegalRequestDataException(msg);
-        }
-
-        User user = ValidationUtil.checkNotFoundWithId(userService.getReference(SecurityUtil.getAuthUserId()), SecurityUtil.getAuthUserId());
-        Restaurant restaurant = ValidationUtil.checkNotFoundWithId(restaurantService.getReference(restaurantId), restaurantId);
+    public void vote(int restaurantId) {
+        LocalDateTime voteDateTime = LocalDateTime.now();
+        User user = userService.getReference(SecurityUtil.getAuthUserId());
+        Restaurant restaurant = restaurantService.getReference(restaurantId);
         Vote findVote = crudRepository.findByUserAndDate(user, Date.valueOf(voteDateTime.toLocalDate())).orElse(null);
         if (findVote != null) {
             LocalTime voteLastTime = systemSettings.getVoteLastTime();

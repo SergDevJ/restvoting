@@ -19,12 +19,13 @@ $(function () {
     enableVoteButton();
 });
 
-function castVote() {
+function vote() {
     let id = document.querySelector('input[name="vote"]:checked').value;
     var d = new Date();
     $.ajax({
         type: "POST",
-        url: votingUrl + id +"?voteDateTime=" + d.toLocaleDateString('en-CA') + "T" + d.toLocaleTimeString('ru'),
+        // url: votingUrl + id +"?voteDateTime=" + d.toLocaleDateString('en-CA') + "T" + d.toLocaleTimeString('ru'),
+        url: votingUrl + id,
         contentType: "application/json; charset=utf-8",
         data: ""
     }).done(function () {
