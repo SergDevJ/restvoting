@@ -11,7 +11,6 @@ import ru.ssk.restvoting.MenuTestData;
 import ru.ssk.restvoting.model.MenuItem;
 import ru.ssk.restvoting.to.MenuItemDisplay;
 import ru.ssk.restvoting.to.MenuItemTo;
-import ru.ssk.restvoting.util.exception.IllegalRequestDataException;
 import ru.ssk.restvoting.util.exception.NotFoundException;
 
 import javax.annotation.PostConstruct;
@@ -103,7 +102,7 @@ class MenuServiceTest extends AbstractTest {
     void createWithException() {
         Assertions.assertThrows(PersistenceException.class, () -> menuService.create(MenuTestData.doubleNewTodayMenuItemTo));
         validateCause(SQLIntegrityConstraintViolationException.class, "menu_unique_rest_date_dish_idx", () -> menuService.create(MenuTestData.doubleNewTodayMenuItemTo));
-        Assertions.assertThrows(IllegalRequestDataException.class, () -> menuService.create(MenuTestData.todayMenuItemTo));
+        Assertions.assertThrows(DataIntegrityViolationException.class, () -> menuService.create(MenuTestData.todayMenuItemTo));
         Assertions.assertThrows(IllegalArgumentException.class, () -> menuService.create(new MenuItemTo(MenuTestData.RESTAURANT_ID, null, null, 100F)));
         Assertions.assertThrows(IllegalArgumentException.class, () -> menuService.create(new MenuItemTo(null, null, MenuTestData.DISH_ID, 100F)));
     }

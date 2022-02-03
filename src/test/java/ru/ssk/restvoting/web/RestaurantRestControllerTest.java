@@ -31,6 +31,7 @@ import static ru.ssk.restvoting.UserTestData.user;
 class RestaurantRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = RestaurantAdminRestController.REST_URL;
+    private static final String REST_MENU_URL = "/rest/restaurant-menu";
 
     @Autowired
     private ApplicationContext context;
@@ -45,7 +46,7 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
     @Test
     void getAll() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL)
-                .with(userHttpBasic(admin)))
+                        .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -55,7 +56,7 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
     @Test
     void get() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/" + RESTAURANT1_ID)
-                .with(userHttpBasic(admin)))
+                        .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -80,7 +81,7 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
     @Test
     void getNotFound() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/" + NOT_FOUND_ID)
-                .with(userHttpBasic(admin)))
+                        .with(userHttpBasic(admin)))
                 .andExpect(status().isUnprocessableEntity())
                 .andDo(print());
     }
@@ -89,9 +90,9 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
     void update() throws Exception {
         Restaurant updated = getUpdated();
         mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + "/" + RESTAURANT1_ID)
-                .with(userHttpBasic(admin))
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                        .with(userHttpBasic(admin))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.writeValue(updated)))
                 .andDo(print());
         Assertions.assertThat(service.get(RESTAURANT1_ID)).usingRecursiveComparison().isEqualTo(updated);
     }
@@ -100,9 +101,9 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
     void createWithLocation() throws Exception {
         Restaurant newRestaurant = getNew();
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
-                .with(userHttpBasic(admin))
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newRestaurant)))
+                        .with(userHttpBasic(admin))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.writeValue(newRestaurant)))
                 .andDo(print());
 
         Restaurant actual = readFromJson(result, Restaurant.class);
@@ -115,26 +116,25 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
     @Test
     void delete() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL + "/" + RESTAURANT1_ID)
-                .with(userHttpBasic(admin)))
+                        .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-
         assertThrows(NotFoundException.class, () -> service.get(RESTAURANT1_ID));
     }
 
     @Test
     void deleteNotFound() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL + "/" + NOT_FOUND_ID)
-                .with(userHttpBasic(admin)))
+                        .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
     void getTodayMenu() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "/menu/" + RESTAURANT1_ID +
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_MENU_URL + "/" + RESTAURANT1_ID +
                                 "?date=" + LocalDate.now())
-                .with(userHttpBasic(admin)))
+                        .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -145,9 +145,9 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
     void createInvalid() throws Exception {
         Restaurant invalid = new Restaurant(null, null, "email", null);
         mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(invalid))
-                .with(userHttpBasic(admin)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.writeValue(invalid))
+                        .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -156,9 +156,9 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
     void updateInvalid() throws Exception {
         Restaurant invalid = new Restaurant(RESTAURANT1_ID, null, "Email", "a");
         mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + "/" + RESTAURANT1_ID)
-                .with(userHttpBasic(admin))
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(invalid)))
+                        .with(userHttpBasic(admin))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.writeValue(invalid)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -168,9 +168,9 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
     void createDuplicate() throws Exception {
         Restaurant clone = new Restaurant(null, restaurant1.getName(), restaurant1.getEmail(), restaurant1.getAddress());
         mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(clone))
-                .with(userHttpBasic(admin)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.writeValue(clone))
+                        .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -180,9 +180,9 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
     void updateDuplicate() throws Exception {
         Restaurant invalid = new Restaurant(RESTAURANT1_ID, restaurant2.getName(), restaurant2.getEmail(), restaurant2.getAddress());
         mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + "/" + RESTAURANT1_ID)
-                .with(userHttpBasic(admin))
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(invalid)))
+                        .with(userHttpBasic(admin))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonUtil.writeValue(invalid)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
