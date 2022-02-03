@@ -41,7 +41,7 @@ public class DishService {
     }
 
     public void delete(int id) {
-        checkNotFoundWithId(crudRepository.delete(id), id);
+        checkNotFoundWithId(crudRepository.delete(id) != 0, id);
     }
 
     public Dish getReference(Integer id) {

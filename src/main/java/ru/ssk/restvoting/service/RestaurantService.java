@@ -52,11 +52,11 @@ public class RestaurantService {
 
     @CacheEvict(value = "restaurants", allEntries = true)
     public void delete(int id) {
-        checkNotFoundWithId(crudRepository.delete(id), id);
+        checkNotFoundWithId(crudRepository.delete(id) != 0, id);
     }
 
     public Restaurant get(int id) {
-        return crudRepository.findById(id).orElse(null);
+        return checkNotFoundWithId(crudRepository.findById(id).orElse(null), id);
     }
 
     public Restaurant getReference(Integer id) {

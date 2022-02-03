@@ -41,7 +41,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User get(int id) {
-        return crudRepository.findById(id).orElse(null);
+        return checkNotFoundWithId(crudRepository.findById(id).orElse(null), id);
     }
 
     public List<User> getAll() {

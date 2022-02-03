@@ -10,12 +10,13 @@ import ru.ssk.restvoting.repository.MenuDataJpaRepository;
 import ru.ssk.restvoting.to.MenuItemDisplay;
 import ru.ssk.restvoting.to.MenuItemTo;
 import ru.ssk.restvoting.util.MenuUtil;
-import ru.ssk.restvoting.util.ValidationUtil;
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+
+import static ru.ssk.restvoting.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class MenuService {
@@ -41,11 +42,11 @@ public class MenuService {
     }
 
     public MenuItem get(int id) {
-        return crudRepository.findById(id).orElse(null);
+        return checkNotFoundWithId(crudRepository.findById(id).orElse(null), id);
     }
 
     public MenuItemTo getTo(int id) {
-        return ValidationUtil.checkNotFoundWithId(MenuUtil.asTo(crudRepository.findById(id).orElse(null)), id);
+        return checkNotFoundWithId(MenuUtil.asTo(crudRepository.findById(id).orElse(null)), id);
     }
 
     @CacheEvict(value = "votingMenu", allEntries = true)
@@ -74,6 +75,6 @@ public class MenuService {
 
     @CacheEvict(value = "votingMenu", allEntries = true)
     public void delete(int id) {
-        ValidationUtil.checkNotFoundWithId(crudRepository.delete(id) != 0, id);
+        checkNotFoundWithId(crudRepository.delete(id) != 0, id);
     }
 }
