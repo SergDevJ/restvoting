@@ -1,9 +1,8 @@
 const date = new Date();
-const RestaurantMenuAjaxUrl = "admin/restaurants/menu/" +
+const RestaurantMenuAjaxUrl = "restaurant-menu/" +
     document.getElementById("restaurantId").value +
     "?date=" + date.toLocaleDateString('en-CA');
 const MenuAjaxUrl = "admin/menu/";
-
 
 // https://stackoverflow.com/a/5064235/548473
 const ctx = {
@@ -54,7 +53,6 @@ function saveMenuItem() {
         successNoty("common.saved");
     });
 }
-
 
 $(function () {
     makeEditable({
@@ -119,11 +117,9 @@ function updateRow(id) {
         {
             list.options.selectedIndex = 0;
         }
-
         $('#editRow').modal();
     });
 }
-
 
 function deleteRow(id) {
     if (confirm('Are you sure?')) {

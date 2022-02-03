@@ -100,6 +100,7 @@
                 <tr>
                     <th><spring:message code="profile.table.date"/></th>
                     <th><spring:message code="profile.table.restaurant"/></th>
+                    <th>Id</th>
                 </tr>
                 </thead>
             </table>

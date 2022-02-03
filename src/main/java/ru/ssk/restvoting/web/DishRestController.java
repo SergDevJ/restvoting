@@ -19,11 +19,12 @@ import static ru.ssk.restvoting.util.ValidationUtil.assureIdConsistent;
 import static ru.ssk.restvoting.util.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(value = {DishRestController.URL, DishRestController.REST_URL}, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = {DishRestController.URL, DishRestController.REST_URL},
+        produces = MediaType.APPLICATION_JSON_VALUE)
 public class DishRestController {
     static final String URL = "/admin/dishes";
     static final String REST_URL = "/rest/admin/dishes";
-    private Logger log = LoggerFactory.getLogger(DishRestController.class);
+    private static final Logger log = LoggerFactory.getLogger(DishRestController.class);
 
     @Autowired
     private DishService service;

@@ -17,7 +17,8 @@
       <span class="fa fa-check"></span>
       <spring:message code="restaurant.vote"/>
     </button>
-    <input type="hidden" name="votedId" id="votedId" value="0">
+    <input type="hidden" name="votedId" id="votedId" value=0>
+    <input type="hidden" name="voteId" id="voteId" value=${voteId}>
     <table class="table table-striped" id="datatable">
       <thead>
       <tr>
@@ -32,6 +33,7 @@
         <jsp:useBean id="restaurant" type="ru.ssk.restvoting.to.RestaurantVoteTo"/>
         <tr>
           <input type="hidden" name="id" value="${restaurant.id}">
+          <input type="hidden" name="voteId" value="${restaurant.voteId}">
           <td><input type="radio" name="vote" onclick="enableVoteButton();" value="${restaurant.id}" <c:if test="${restaurant.isVoted()}">checked</c:if>/> </td>
           <td><c:out value="${restaurant.name}"/></td>
           <td><a href="mailto:${restaurant.email}">${restaurant.email}</a></td>

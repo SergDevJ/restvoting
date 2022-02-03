@@ -9,7 +9,6 @@ import org.springframework.util.Assert;
 import ru.ssk.restvoting.model.Restaurant;
 import ru.ssk.restvoting.model.Vote;
 import ru.ssk.restvoting.repository.RestaurantDataJpaRepository;
-import ru.ssk.restvoting.repository.UserDataJpaRepository;
 import ru.ssk.restvoting.repository.VoteDataJpaRepository;
 import ru.ssk.restvoting.to.RestaurantVoteTo;
 
@@ -27,7 +26,7 @@ public class RestaurantService {
     private final UserService userService;
 
     @Autowired
-    public RestaurantService(RestaurantDataJpaRepository crudRepository, VoteDataJpaRepository voteRepository, UserDataJpaRepository userRepository, UserService userService) {
+    public RestaurantService(RestaurantDataJpaRepository crudRepository, VoteDataJpaRepository voteRepository, UserService userService) {
         this.crudRepository = crudRepository;
         this.voteRepository = voteRepository;
         this.userService = userService;

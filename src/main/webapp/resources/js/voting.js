@@ -1,14 +1,13 @@
-const votingUrl = "voting/";
-const menuUrl = "menu/voting/";
+const voteUrl = "votes";
+const menuUrl = "restaurant-menu/";
 
 // https://stackoverflow.com/a/5064235/548473
 $(function () {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
     $(document).ajaxSend(function (e, xhr, options) {
         xhr.setRequestHeader(header, token);
     });
-
 
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(jqXHR);
@@ -21,11 +20,37 @@ $(function () {
 
 function vote() {
     let id = document.querySelector('input[name="vote"]:checked').value;
-    var d = new Date();
+    let voteId = document.getElementById("voteId").value;
+    $.ajaxSetup({async:false});
+    if (voteId === "0") {
+        $.ajax({
+            type: "GET",
+            url: voteUrl,
+            contentType: "application/json; charset=utf-8",
+            data: ""
+        }).done(function (data) {
+            $.each(data, function (key, value) {
+                if (key === "id") {
+                    voteId = value;
+                    document.getElementById("voteId").value = value;
+                    return false;
+                }
+            });
+        });
+    }
+
+    let url;
+    let requestType;
+    if (voteId === "0") {
+        requestType = "POST";
+        url = voteUrl + "?restaurantId=" + id;
+    } else {
+        requestType = "PUT";
+        url = voteUrl + "/" + voteId + "?restaurantId=" + id;
+    }
     $.ajax({
-        type: "POST",
-        // url: votingUrl + id +"?voteDateTime=" + d.toLocaleDateString('en-CA') + "T" + d.toLocaleTimeString('ru'),
-        url: votingUrl + id,
+        type: requestType,
+        url: url,
         contentType: "application/json; charset=utf-8",
         data: ""
     }).done(function () {
@@ -33,6 +58,7 @@ function vote() {
         document.getElementById("voteBtn").disabled = true;
         successNoty("voting.saved");
     });
+    $.ajaxSetup({async:true});
 }
 
 function enableVoteButton() {
@@ -41,10 +67,11 @@ function enableVoteButton() {
 }
 
 function showMenu(id) {
-    var d = new Date();
+    let d = new Date();
     $.ajax({
         type: "GET",
-        url: menuUrl + id + "?date=" + d.toLocaleDateString('en-CA'),
+        // url: menuUrl + id + "?date=" + d.toLocaleDateString('en-CA'),
+        url: menuUrl + id + "/voting?date=" + d.toLocaleDateString('en-CA'),
         dataType: "json",
     }).done(function (objects) {
         let table = document.getElementById("menuTable");
@@ -76,7 +103,5 @@ function showMenu(id) {
         } else {
             $("#showNoMenu").modal("show");
         }
-
     });
-
 }

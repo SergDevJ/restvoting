@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Transactional(readOnly = true)
 public interface VoteDataJpaRepository extends JpaRepository<Vote, Integer> {
-    @Query(value = "select r.name as restaurantName, v.date as voteDate " +
+    @Query(value = "select r.id as restaurantId, r.name as restaurantName, v.date as voteDate " +
             "from Vote v inner join Restaurant r on v.restaurant.id = r.id " +
             "where v.user.id = :user_id and v.date between :start_date and :end_date " +
             "order by v.date desc")

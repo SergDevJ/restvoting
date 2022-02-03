@@ -1,12 +1,11 @@
-// let form;
-const profileAjaxUrl = "profile/";
+const profileAjaxUrl = "profile";
 
 const ctx = {
-    ajaxUrl: profileAjaxUrl + "voting_history",
+    ajaxUrl: profileAjaxUrl + "/voting-history",
     updateTable: function () {
         $.ajax({
             type: "GET",
-            url: profileAjaxUrl + "voting_history",
+            url: profileAjaxUrl + "/voting-history",
             data: $("#filter").serialize()
         }).done(updateTableByData);
     }
@@ -30,7 +29,6 @@ function init() {
         xhr.setRequestHeader(header, token);
     });
 
-
     var register = document.getElementById("register").value;
     if (register !== "true") {
         readProfile();
@@ -41,6 +39,10 @@ function init() {
                 },
                 {
                     "data": "restaurantName"
+                },
+                {
+                    "data": "restaurantId",
+                    "visible": false
                 }
             ],
             "order": [
@@ -51,16 +53,15 @@ function init() {
             ]
         });
     } else {
-    let votingHistoryForm = $('#votingHistoryForm');
-    votingHistoryForm.hide();
-}
-
+        let votingHistoryForm = $('#votingHistoryForm');
+        votingHistoryForm.hide();
+    }
 }
 
 function readProfile() {
     let form = $('#profileForm');
     form.find(":input").val("");
-    $.get(profileAjaxUrl + "authuser", function (data) {
+    $.get(profileAjaxUrl + "/personal-data", function (data) {
         $.each(data, function (key, value) {
             form.find("input[name='" + key + "']").val(value);
         });
@@ -75,18 +76,18 @@ function save() {
     obj["password"] = document.getElementById("password").value;
     var jsonData = JSON.stringify(obj);
 
-    var saveType;
+    var requestType;
     var url;
     if (obj["id"] === "") {
-        saveType = "POST";
-        url = profileAjaxUrl + "register";
+        requestType = "POST";
+        url = profileAjaxUrl + "/register";
     } else {
-        saveType = "PUT";
+        requestType = "PUT";
         url = profileAjaxUrl;
     }
 
     $.ajax({
-        type: saveType,
+        type: requestType,
         url: url,
         contentType: "application/json; charset=utf-8",
         data: jsonData
@@ -98,5 +99,5 @@ function save() {
 
 function clearFilter() {
     $("#filter")[0].reset();
-    $.get(profileAjaxUrl + "voting_history", updateTableByData);
+    $.get(profileAjaxUrl + "/voting-history", updateTableByData);
 }

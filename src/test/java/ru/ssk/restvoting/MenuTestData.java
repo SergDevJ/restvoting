@@ -23,15 +23,15 @@ public class MenuTestData {
     public static final MenuItemTo doubleNewTodayMenuItemTo = new MenuItemTo(RESTAURANT_ID, MENU_DATE, DISH_ID, 500F);
     public static final MenuItemTo menuItemTo = new MenuItemTo(START_SEQ, RESTAURANT_ID, Date.valueOf("2021-05-01"), DISH_ID + 1, 100F);
 
-    public static final MenuItemDisplayImpl todayMenuItem1 = new MenuItemDisplayImpl(TODAY_MENU_ITEM1_ID, "Дичь", 300, 500F);
-    public static final MenuItemDisplayImpl todayMenuItem2 = new MenuItemDisplayImpl(TODAY_MENU_ITEM1_ID + 1, "Борщ", 250, 150.33F);
-    public static final MenuItemDisplayImpl todayMenuItem3 = new MenuItemDisplayImpl(TODAY_MENU_ITEM1_ID + 2, "Бифстроганов", 220, 3000.03F);
-    public static final MenuItemDisplayImpl todayMenuItem4 = new MenuItemDisplayImpl(TODAY_MENU_ITEM1_ID + 3, "Икра", 50, 110.05F);
+    public static final MenuItemDisplayImpl todayMenuItem1 = new MenuItemDisplayImpl(TODAY_MENU_ITEM1_ID, DISH_ID, "Дичь", 300, 500F);
+    public static final MenuItemDisplayImpl todayMenuItem2 = new MenuItemDisplayImpl(TODAY_MENU_ITEM1_ID + 1, DISH_ID + 1, "Борщ", 250, 150.33F);
+    public static final MenuItemDisplayImpl todayMenuItem3 = new MenuItemDisplayImpl(TODAY_MENU_ITEM1_ID + 2, DISH_ID + 2, "Бифстроганов", 220, 3000.03F);
+    public static final MenuItemDisplayImpl todayMenuItem4 = new MenuItemDisplayImpl(TODAY_MENU_ITEM1_ID + 3, DISH_ID + 5, "Икра", 50, 110.05F);
     public static final List<MenuItemDisplayImpl> todayMenu = List.of(todayMenuItem3, todayMenuItem2, todayMenuItem1, todayMenuItem4);
 
-    public static final MenuItemDisplayImpl menuItem1 = new MenuItemDisplayImpl(MENU_ITEM1_ID, "Борщ", 250, 100F);
-    public static final MenuItemDisplayImpl menuItem2 = new MenuItemDisplayImpl(MENU_ITEM1_ID + 1, "Бифстроганов", 220, 200.44F);
-    public static final MenuItemDisplayImpl menuItem3 = new MenuItemDisplayImpl(MENU_ITEM1_ID + 2, "Икра", 50, 2000.5F);
+    public static final MenuItemDisplayImpl menuItem1 = new MenuItemDisplayImpl(MENU_ITEM1_ID, DISH_ID + 1, "Борщ", 250, 100F);
+    public static final MenuItemDisplayImpl menuItem2 = new MenuItemDisplayImpl(MENU_ITEM1_ID + 1, DISH_ID + 2, "Бифстроганов", 220, 200.44F);
+    public static final MenuItemDisplayImpl menuItem3 = new MenuItemDisplayImpl(MENU_ITEM1_ID + 2, DISH_ID + 5, "Икра", 50, 2000.5F);
     public static final List<MenuItemDisplayImpl> anyDateMenu = List.of(menuItem2, menuItem1, menuItem3);
 
     public static MenuItemTo getNew() {

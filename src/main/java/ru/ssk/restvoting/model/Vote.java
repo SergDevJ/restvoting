@@ -7,6 +7,14 @@ import java.sql.Date;
 @Entity
 @Table(name = "votes")
 public class Vote extends AbstractBaseEntity {
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @NotNull
@@ -21,6 +29,13 @@ public class Vote extends AbstractBaseEntity {
     @NotNull
     private java.sql.Date date;
 
+    public Vote(Integer id, User user, Restaurant restaurant, Date date) {
+        super(id);
+        this.user = user;
+        this.restaurant = restaurant;
+        this.date = date;
+    }
+
     public Vote(User user, Restaurant restaurant, Date date) {
         this.user = user;
         this.restaurant = restaurant;
@@ -34,8 +49,16 @@ public class Vote extends AbstractBaseEntity {
         return user;
     }
 
+    public Integer getUserId() {
+        return user.getId();
+    }
+
     public Restaurant getRestaurant() {
         return restaurant;
+    }
+
+    public Integer getRestaurantId() {
+        return restaurant.getId();
     }
 
     public Date getDate() {
@@ -48,7 +71,7 @@ public class Vote extends AbstractBaseEntity {
 
     @Override
     public String toString() {
-        return String.format("%s [%s, %s, %s]", super.toString(), user, date, restaurant);
+        return String.format("%s [userId=%s, date=%s, restaurantId=%s]", super.toString(), user.getId(), date, restaurant.getId());
     }
 
 }

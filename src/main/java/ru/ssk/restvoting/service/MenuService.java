@@ -13,6 +13,7 @@ import ru.ssk.restvoting.util.MenuUtil;
 import ru.ssk.restvoting.util.ValidationUtil;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,6 +36,7 @@ public class MenuService {
     }
 
     public List<MenuItemDisplay> getAll(int restaurantId, Date date) {
+        if (date == null) date = Date.valueOf(LocalDate.now());
         return crudRepository.getAllForDisplay(restaurantId, date);
     }
 
@@ -74,5 +76,4 @@ public class MenuService {
     public void delete(int id) {
         ValidationUtil.checkNotFoundWithId(crudRepository.delete(id) != 0, id);
     }
-
 }

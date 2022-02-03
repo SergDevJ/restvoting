@@ -20,9 +20,9 @@
     <br>
     <br>
     <h6><a><spring:message code="user.administration"/></a></h6>
-    <li><a href="${pageContext.request.contextPath}/admin/users_list"><spring:message code="admin.users"/></a></li>
-    <li><a href="${pageContext.request.contextPath}/admin/restaurants_list"><spring:message code="admin.restaurants"/></a></li>
-    <li><a href="${pageContext.request.contextPath}/admin/dishes_list"><spring:message code="admin.dishes"/></a></li>
+    <li><a href="${pageContext.request.contextPath}/admin/users-list"><spring:message code="admin.users"/></a></li>
+    <li><a href="${pageContext.request.contextPath}/admin/restaurants-list"><spring:message code="admin.restaurants"/></a></li>
+    <li><a href="${pageContext.request.contextPath}/admin/dishes-list"><spring:message code="admin.dishes"/></a></li>
 </ul>
 </body>
 </html>

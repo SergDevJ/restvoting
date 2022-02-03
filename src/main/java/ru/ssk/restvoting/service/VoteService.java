@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import ru.ssk.restvoting.application.Settings;
 import ru.ssk.restvoting.model.Restaurant;
 import ru.ssk.restvoting.model.User;
@@ -15,9 +15,12 @@ import ru.ssk.restvoting.util.SecurityUtil;
 import ru.ssk.restvoting.util.exception.TooLateVoteException;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+
+import static ru.ssk.restvoting.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class VoteService {
@@ -44,25 +47,34 @@ public class VoteService {
         this.systemSettings = systemSettings;
     }
 
-    @Transactional
-    public void vote(int restaurantId) {
-        LocalDateTime voteDateTime = LocalDateTime.now();
+    public Vote create(Integer restaurantId) {
+        Assert.notNull(restaurantId, "Restaurant id must not be null");
+        Date voteDate = Date.valueOf(LocalDate.now());
         User user = userService.getReference(SecurityUtil.getAuthUserId());
         Restaurant restaurant = restaurantService.getReference(restaurantId);
-        Vote findVote = crudRepository.findByUserAndDate(user, Date.valueOf(voteDateTime.toLocalDate())).orElse(null);
-        if (findVote != null) {
-            LocalTime voteLastTime = systemSettings.getVoteLastTime();
-            if (voteDateTime.toLocalTime().isAfter(voteLastTime)) {
-                String msg = messageSource.getMessage(TOO_LATE_VOTE_MSG_CODE, new Object[]{voteLastTime.toString()}, "Voting is not possible after {0}",
-                        LocaleContextHolder.getLocale());
-                throw new TooLateVoteException(msg);
-            }
-            findVote.setRestaurant(restaurant);
-            crudRepository.save(findVote);
-        } else {
-            Vote vote = new Vote(user, restaurant, Date.valueOf(voteDateTime.toLocalDate()));
-            crudRepository.save(vote);
+        return crudRepository.save(new Vote(user, restaurant, voteDate));
+    }
+
+    public void update(Integer voteId, Integer restaurantId) {
+        Assert.notNull(voteId, "Vote id must not be null");
+        Assert.notNull(restaurantId, "Restaurant id must not be null");
+        LocalDateTime voteDateTime = LocalDateTime.now();
+        LocalTime voteLastTime = systemSettings.getVoteLastTime();
+        if (voteDateTime.toLocalTime().isAfter(voteLastTime)) {
+            String msg = messageSource.getMessage(TOO_LATE_VOTE_MSG_CODE, new Object[]{voteLastTime.toString()}, "Voting is not possible after {0}",
+                    LocaleContextHolder.getLocale());
+            throw new TooLateVoteException(msg);
         }
+        User user = userService.getReference(SecurityUtil.getAuthUserId());
+        Restaurant restaurant = restaurantService.getReference(restaurantId);
+        Date voteDate = Date.valueOf(voteDateTime.toLocalDate());
+        Vote updated = new Vote(voteId, user, restaurant, voteDate);
+        checkNotFoundWithId(crudRepository.save(updated), updated.getId());
+    }
+
+    public Vote findToday() {
+        return crudRepository.findByUserAndDate(userService.getReference(SecurityUtil.getAuthUserId()),
+                Date.valueOf(LocalDate.now())).orElse(null);
     }
 
     public List<ProfileVotingHistoryTo> getProfileVotingHistory(Date startDate, Date endDate) {

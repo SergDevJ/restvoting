@@ -8,48 +8,54 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.ssk.restvoting.model.MenuItem;
-import ru.ssk.restvoting.service.MenuService;
-import ru.ssk.restvoting.to.MenuItemTo;
+import ru.ssk.restvoting.model.Restaurant;
+import ru.ssk.restvoting.service.RestaurantService;
 import ru.ssk.restvoting.util.ValidationUtil;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
-import static ru.ssk.restvoting.util.ValidationUtil.assureIdConsistent;
-
+import static ru.ssk.restvoting.util.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(value = {MenuAdminRestController.URL, MenuAdminRestController.REST_URL},
+@RequestMapping(value = {RestaurantAdminRestController.URL, RestaurantAdminRestController.REST_URL},
         produces = MediaType.APPLICATION_JSON_VALUE)
-public class MenuAdminRestController {
-    static final String URL = "/admin/menu";
-    static final String REST_URL = "/rest/admin/menu";
-    private static final Logger log = LoggerFactory.getLogger(MenuAdminRestController.class);
+public class RestaurantAdminRestController {
+    static final String URL = "/admin/restaurants";
+    static final String REST_URL = "/rest/admin/restaurants";
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    MenuService service;
+    private RestaurantService service;
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    List<Restaurant> getAll() {
+        log.info("getAll");
+        return service.getAll();
+    }
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public MenuItemTo getTo(@PathVariable("id") int id) {
-        log.info("getTo {}", id);
-        return service.getTo(id);
+    Restaurant get(@PathVariable("id") int id) {
+        log.info("get {}", id);
+        return service.get(id);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable("id") Integer id,
-                       @Valid @RequestBody MenuItemTo menuItemTo) {
-        log.info("update {} with id={}", menuItemTo, id);
-        assureIdConsistent(menuItemTo, id);
-        service.update(menuItemTo);
+                       @Valid @RequestBody Restaurant restaurant) {
+        log.info("update {} with id={}", restaurant, id);
+        ValidationUtil.assureIdConsistent(restaurant, id);
+        service.update(restaurant);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MenuItem> createWithLocation(@Valid @RequestBody MenuItemTo menuItemTo) {
-        ValidationUtil.checkNew(menuItemTo);
-        MenuItem created = service.create(menuItemTo);
+    public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {
+        checkNew(restaurant);
+        Restaurant created = service.create(restaurant);
         log.info("create {} with id={}", created, created.getId());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -57,7 +63,7 @@ public class MenuAdminRestController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") int id) {
         log.info("delete with id={}", id);

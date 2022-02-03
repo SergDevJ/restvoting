@@ -1,13 +1,13 @@
-const RestaurantAjaxUrl = "admin/restaurants/";
+const RestaurantAdminAjaxUrl = "admin/restaurants/";
+const RestaurantAjaxUrl = "restaurants/";
 
 // https://stackoverflow.com/a/5064235/548473
 const ctx = {
-    ajaxUrl: RestaurantAjaxUrl,
+    ajaxUrl: RestaurantAdminAjaxUrl,
     updateTable: function () {
         $.get(RestaurantAjaxUrl, updateTableByData);
     }
 }
-
 
 function save() {
     var id = document.getElementById("id").value;
@@ -22,10 +22,10 @@ function save() {
     var saveUrl;
     if (obj["id"] === "") {
         saveType = "POST";
-        saveUrl = RestaurantAjaxUrl;
+        saveUrl = RestaurantAdminAjaxUrl;
     } else {
         saveType = "PUT";
-        saveUrl = RestaurantAjaxUrl + id;
+        saveUrl = RestaurantAdminAjaxUrl + id;
     }
 
     $.ajax({
@@ -82,7 +82,6 @@ $(function () {
 function renderMenuBtn(data, type, row) {
     if (type === "display") {
        var d = new Date();
-       return "<a href=admin/menu_list/" + row.id + "?menuDate=" + d.toLocaleDateString('en-CA') + "><span class='fa fa-bars'></span></a>";
-       //??????
+       return "<a href=admin/menu-list/" + row.id + "?menuDate=" + d.toLocaleDateString('en-CA') + "><span class='fa fa-bars'></span></a>";
     }
 }

@@ -14,27 +14,26 @@ import java.sql.Date;
 @RequestMapping(value = "/admin")
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class AdminController {
-    @GetMapping(value = "/restaurants_list")
+    @GetMapping(value = "/restaurants-list")
     public String restaurants() {
         return "restaurants";
     }
 
-    @GetMapping(value = "/users_list")
+    @GetMapping(value = "/users-list")
     public String users() {
         return "users";
     }
 
-    @GetMapping(value = "/dishes_list")
+    @GetMapping(value = "/dishes-list")
     public String dishes() {
         return "dishes";
     }
 
-    @GetMapping(value = "/menu_list/{id}")
+    @GetMapping(value = "/menu-list/{id}")
     public String menu(Model model, @PathVariable("id") int restaurantId,
                        @RequestParam("menuDate") Date menuDate) {
         model.addAttribute("restaurantId", restaurantId);
         model.addAttribute("menuDate", menuDate);
         return "menu";
     }
-
 }

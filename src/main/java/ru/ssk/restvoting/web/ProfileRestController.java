@@ -51,16 +51,16 @@ public class ProfileRestController {
         binder.addValidators(userValidator);
     }
 
-    @GetMapping(value = "/authuser")
+    @GetMapping(value = "/personal-data")
     @ResponseStatus(HttpStatus.OK)
-    public User getAuthUser() {
-        log.info("getAuthUser");
+    public User get() {
+        log.info("get");
         AuthUser user = SecurityUtil.getAuthUser();
         Objects.requireNonNull(user, "No authenticated user");
         return user.getUser();
     }
 
-    @GetMapping(value = "/voting_history")
+    @GetMapping(value = "/voting-history")
     @ResponseStatus(HttpStatus.OK)
     public List<ProfileVotingHistoryTo> getVotingHistory(
             @RequestParam(value = "start_date", required = false, defaultValue = VoteService.FILTER_DEFAULT_START_DATE) @Nullable Date startDate,

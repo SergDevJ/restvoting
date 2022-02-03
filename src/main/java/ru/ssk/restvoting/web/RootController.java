@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.ssk.restvoting.service.RestaurantService;
+import ru.ssk.restvoting.to.RestaurantVoteTo;
 import ru.ssk.restvoting.util.SecurityUtil;
+
+import java.util.List;
 
 @Controller
 public class RootController {
@@ -26,8 +29,10 @@ public class RootController {
 
     @GetMapping("/voting")
     public String voting(Model model) {
-        model.addAttribute("restaurants",
-                restaurantService.getAllWithUserVote(SecurityUtil.getAuthUserId()));
+        List<RestaurantVoteTo> restaurants = restaurantService.getAllWithUserVote(SecurityUtil.getAuthUserId());
+        model.addAttribute("restaurants", restaurants);
+        RestaurantVoteTo voted = restaurants.stream().filter(RestaurantVoteTo::isVoted).findFirst().orElse(null);
+        model.addAttribute("voteId", voted != null ? voted.getVoteId() : 0);
         return "voting";
     }
 
