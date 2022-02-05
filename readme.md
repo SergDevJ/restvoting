@@ -37,7 +37,7 @@ The REST portion of the interface is covered with JUnit tests using Spring MVC T
 `curl -s -v http://localhost:8080/restvoting/rest/admin/users/2000 -u Admin:1111`
 
 #### get Voting history
-`curl -s "http://localhost:8080/restvoting/rest/profile/voting_history?start_date=2021-05-01&end_date=2021-05-02" -u User1:2222`
+`curl -s "http://localhost:8080/restvoting/rest/profile/voting-history?start_date=2021-05-01&end_date=2021-05-02" -u User1:2222`
 
 #### register User
 `curl -s -i -X POST -d '{"name":"NewUser","email":"new_user@mail.ru","password":"abcd"}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/restvoting/rest/profile/register`
@@ -45,46 +45,56 @@ The REST portion of the interface is covered with JUnit tests using Spring MVC T
 #### create User
 `curl -s -i -X POST -d '{"name":"NewUser2","email":"new_user2@mail.ru","password":"abcd"}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/restvoting/rest/admin/users -u Admin:1111`
 
-#### update User profile
+#### update User profile -  with user edit restrictions error
 `curl -s -i -X PUT -d '{"name":"UpdatedUser","email":"new_mail@mail.ru","password":"psw1"}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/restvoting/rest/profile -u User1:2222`
 
-#### update User 1002
-`curl -s -i -X PUT -d '{"name":"UpdatedUser2","email":"new_mail2@mail.ru","password":"psw2"}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/restvoting/rest/admin/users/1002 -u Admin:1111`
+#### update User 1003
+`curl -s -i -X PUT -d '{"name":"UpdatedUser3","email":"new_mail2@mail.ru","password":"psw2"}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/restvoting/rest/admin/users/1003 -u Admin:1111`
+
+#### update User profile
+`curl -s -i -X PUT -d '{"name":"User3","email":"mail3@mail.ru","password":"abcd"}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/restvoting/rest/profile -u UpdatedUser3:psw2`
 
 #### update User - with validate error
-`curl -s -i -X PUT -d '{"name":"UpdatedUser2","email":"new_mail2@mail.ru","password":"123"}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/restvoting/rest/admin/users/1002 -u Admin:1111`
+`curl -s -i -X PUT -d '{"name":"User3","email":"mail3@mail.ru","password":"123"}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/restvoting/rest/admin/users/1002 -u Admin:1111`
 
 #### delete User - with error 403 Forbidden
-`curl -s -X DELETE http://localhost:8080/restvoting/rest/admin/users/1002 -u User3:abcd`
+`curl -s -X DELETE http://localhost:8080/restvoting/rest/admin/users/1002 -u User3:psw3`
 
 #### delete User (profile)
-`curl -s -X DELETE http://localhost:8080/restvoting/rest/profile -u UpdatedUser:psw1`
+`curl -s -X DELETE http://localhost:8080/restvoting/rest/profile -u NewUser:abcd`
 
-#### delete User 1002
-`curl -s -X DELETE http://localhost:8080/restvoting/rest/admin/users/1002 -u Admin:1111`
+#### delete User 1005
+`curl -s -X DELETE http://localhost:8080/restvoting/rest/admin/users/1005 -u Admin:1111`
+
+
+
+### _Restaurants_:
+
+#### get All Restaurants
+`curl -s http://localhost:8080/restvoting/rest/restaurants -u Admin:1111`
+
+#### get Restaurant 1000
+`curl -s http://localhost:8080/restvoting/rest/restaurants/1001 -u Admin:1111`
 
 
 
 ### _Voting_:
 
-#### Cast vote (first time or before 11:00)
-`curl -s -X POST http://localhost:8080/restvoting/rest/voting/1000?voteDateTime=2021-12-11T12:10:00 -u User3:abcd`
+#### Vote (first time)
+`curl -s -X POST http://localhost:8080/restvoting/rest/votes?restaurantId=1000 -u User3:abcd`
 
-#### Cast vote (again after 11:00) - with validation error
-`curl -s -X POST http://localhost:8080/restvoting/rest/voting/1000?voteDateTime=2021-12-11T12:20:00 -u User3:abcd`
-
-#### Cast vote (invalid voting date) - with validation error
-`curl -s -X POST http://localhost:8080/restvoting/rest/voting/1000?voteDateTime=2021-12-10T10:30:00 -u User3:abcd`
+#### Vote again on the same day (after 11:00 - with validation error)
+`curl -s -X PUT http://localhost:8080/restvoting/rest/votes/1005?restaurantId=1001 -u User3:abcd`
 
 
 
 ### _Menu_:
 
 #### Get menu for voting (cacheable)
-`curl -s "http://localhost:8080/restvoting/rest/menu/voting/1000?date=2021-05-01" -u User3:abcd`
+`curl -s "http://localhost:8080/restvoting/rest/restaurant-menu/1000/voting" -u User3:abcd`
 
 #### Get menu history
-`curl -s "http://localhost:8080/restvoting/rest/menu/history/1000?date=2021-05-01" -u User3:abcd`
+`curl -s "http://localhost:8080/restvoting/rest/restaurant-menu/1000/" -u User3:abcd`
 
 
 
