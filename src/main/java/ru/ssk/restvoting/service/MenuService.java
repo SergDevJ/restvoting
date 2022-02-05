@@ -33,6 +33,7 @@ public class MenuService {
 
     @Cacheable("votingMenu")
     public List<MenuItemDisplay> getAllForVoting(int restaurantId, Date date) {
+        if (date == null) date = Date.valueOf(LocalDate.now());
         return crudRepository.getAllForDisplay(restaurantId, date);
     }
 

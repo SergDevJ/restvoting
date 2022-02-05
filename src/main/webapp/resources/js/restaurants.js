@@ -81,7 +81,6 @@ $(function () {
 
 function renderMenuBtn(data, type, row) {
     if (type === "display") {
-       var d = new Date();
-       return "<a href=admin/menu-list/" + row.id + "?menuDate=" + d.toLocaleDateString('en-CA') + "><span class='fa fa-bars'></span></a>";
+       return "<a href=admin/restaurant-menu/" + row.id + "><span class='fa fa-bars'></span></a>";
     }
 }

@@ -6,9 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.sql.Date;
 
 @Controller
 @RequestMapping(value = "/admin")
@@ -29,11 +26,9 @@ public class AdminController {
         return "dishes";
     }
 
-    @GetMapping(value = "/menu-list/{id}")
-    public String menu(Model model, @PathVariable("id") int restaurantId,
-                       @RequestParam("menuDate") Date menuDate) {
+    @GetMapping(value = "/restaurant-menu/{id}")
+    public String menu(Model model, @PathVariable("id") int restaurantId) {
         model.addAttribute("restaurantId", restaurantId);
-        model.addAttribute("menuDate", menuDate);
         return "menu";
     }
 }

@@ -70,8 +70,7 @@ function showMenu(id) {
     let d = new Date();
     $.ajax({
         type: "GET",
-        // url: menuUrl + id + "?date=" + d.toLocaleDateString('en-CA'),
-        url: menuUrl + id + "/voting?date=" + d.toLocaleDateString('en-CA'),
+        url: menuUrl + id + "/voting",
         dataType: "json",
     }).done(function (objects) {
         let table = document.getElementById("menuTable");

@@ -13,11 +13,10 @@
 <jsp:include page="fragments/bodyHeader.jsp"/>
 
 <input type="hidden" name="restaurantId" id="restaurantId" value="${restaurantId}">
-<input type="hidden" name="menuDate" id="menuDate" value="${menuDate}">
 
 <div class="jumbotron pt-4">
     <div class="container">
-        <h3 class="text-center"><spring:message code="menu.today.title"/> ${menuDate} </h3>
+        <h3 class="text-center"><spring:message code="menu.today.title"/></h3>
         <button class="btn btn-primary" onclick="addMenuItem()">
             <span class="fa fa-plus"></span>
             <spring:message code="common.add"/>
@@ -48,7 +47,6 @@
                 <form id="detailsForm">
                     <input type="hidden" id="id" name="id">
                     <input type="hidden" id="dishId" name="dishId">
-                    <input type="hidden" id="date" name="date" value="${menuDate}">
                     <div class="form-group">
                         <label for="dishList"><spring:message code="dish.caption"/></label>
                         <select id="dishList" name="dishList" class="form-control">

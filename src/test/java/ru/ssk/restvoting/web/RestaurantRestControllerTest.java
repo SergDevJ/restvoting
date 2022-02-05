@@ -31,7 +31,7 @@ import static ru.ssk.restvoting.UserTestData.user;
 class RestaurantRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = RestaurantAdminRestController.REST_URL;
-    private static final String REST_MENU_URL = "/rest/restaurant-menu";
+    private static final String REST_MENU_URL = MenuRestController.REST_URL;
 
     @Autowired
     private ApplicationContext context;
