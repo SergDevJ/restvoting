@@ -1,5 +1,7 @@
 package ru.ssk.restvoting.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
@@ -18,11 +20,13 @@ public class Vote extends AbstractBaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @NotNull
+    @JsonIgnore
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     @NotNull
+    @JsonIgnore
     private Restaurant restaurant;
 
     @Column(name = "vote_date")
@@ -45,6 +49,7 @@ public class Vote extends AbstractBaseEntity {
     public Vote() {
     }
 
+    @JsonIgnore
     public User getUser() {
         return user;
     }
@@ -53,6 +58,7 @@ public class Vote extends AbstractBaseEntity {
         return user.getId();
     }
 
+    @JsonIgnore
     public Restaurant getRestaurant() {
         return restaurant;
     }
