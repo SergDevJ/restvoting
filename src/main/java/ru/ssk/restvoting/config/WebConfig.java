@@ -3,6 +3,7 @@ package ru.ssk.restvoting.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.MediaType;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import ru.ssk.restvoting.web.converter.LocalDateTimeConverter;
 import ru.ssk.restvoting.web.json.JacksonObjectMapper;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -30,10 +32,12 @@ import java.util.List;
 import java.util.Locale;
 
 @Configuration
+@EnableSwagger2
 @EnableWebMvc
 @EnableJpaRepositories
 @ComponentScan("ru.ssk.restvoting.web")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@Import({SwaggerConfig.class})
 public class WebConfig implements WebMvcConfigurer {
 
     @Bean
@@ -68,6 +72,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+        registry.addResourceHandler("/swagger-ui/**").addResourceLocations("/resources/swagger-ui/");
     }
 
     @Override

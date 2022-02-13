@@ -68,7 +68,12 @@ public class WebSecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests().antMatchers("/login", "/profile/register").permitAll().and().
+            http.authorizeRequests().
+                    antMatchers("/login",
+                            "/profile/register",
+                            "/swagger-ui/**",
+                            "/v2/api-docs/**"
+                            ).permitAll().and().
                     authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN").and().
                     authorizeRequests().anyRequest().authenticated().and().
                     formLogin().loginPage("/login").permitAll().
