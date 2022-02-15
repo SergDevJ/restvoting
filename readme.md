@@ -20,9 +20,22 @@ The "Admin" user cannot be deleted. When registering / editing a user, the uniqu
 Implemented localization of the user interface with a choice of language from the list on the main page.
 The REST portion of the interface is covered with JUnit tests using Spring MVC Test and Spring Security Test._
 
+###To run the application
+You need to package the source code first: _mvn package_
+
+Then deploy it in Apache Tomcat by copying the .war to the deploy folder of Apache Tomcat.
+
+And then hit this url from a web browser:
+_http://localhost:8080/restvoting_
+
 ### __['Voting system' on HEROKU](http://restvoting.herokuapp.com/)__
 
 
+###Restaurant voting system API documentation is available via Swagger:
+- To launch Swagger UI  hit url _http://localhost:8080/restvoting/swagger-ui/index.html_ from a web browser
+- To access 'swagger.json' hit _http://localhost:8080/restvoting/v2/api-docs_  
+
+<br><br>
 ### __curl samples__ (application is deployed in context 'restvoting'):
 
 ### _Users_:
