@@ -1,5 +1,6 @@
 package ru.ssk.restvoting.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ public abstract class AbstractBaseEntity implements HasId {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(notes = "The database generated entity ID")
     protected Integer id;
 
     @Override

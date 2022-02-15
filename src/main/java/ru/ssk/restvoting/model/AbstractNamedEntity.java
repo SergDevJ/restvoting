@@ -1,5 +1,7 @@
 package ru.ssk.restvoting.model;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
@@ -13,6 +15,7 @@ public abstract class AbstractNamedEntity extends AbstractBaseEntity {
     @NotBlank
     @Size(min = 2, max = 100)
     @Column(name = "name")
+    @ApiModelProperty(notes = "The entity name")
     protected String name;
 
     protected AbstractNamedEntity() {
