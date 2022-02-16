@@ -67,6 +67,7 @@ public class MenuService {
 
     private MenuItem createFromMenuItemTo(MenuItemTo menuItemTo) {
         Objects.requireNonNull(menuItemTo);
+        if (menuItemTo.getDate() == null) menuItemTo.setDate(java.sql.Date.valueOf(LocalDate.now()));
         return new MenuItem(menuItemTo.getId(),
                 restaurantService.getReference(menuItemTo.getRestaurantId()),
                 menuItemTo.getDate(),
