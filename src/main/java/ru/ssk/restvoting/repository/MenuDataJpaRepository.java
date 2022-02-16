@@ -18,7 +18,8 @@ public interface MenuDataJpaRepository extends JpaRepository<MenuItem, Integer> 
     int delete(@Param("id") int id);
 
     @Query(value = "select m.id as id, d.id as dishId, d.name as name, d.weight as weight, " +
-            "((cast(m.price as double)) / 100.0) as price " +
+            "((cast(m.price as double)) / 100.0) as price, " +
+            "m.date as date " +
             "from MenuItem m inner join Dish d on m.dish.id = d.id " +
             "and m.restaurant.id =:restaurantId and m.date = :date " +
             "order by d.name")

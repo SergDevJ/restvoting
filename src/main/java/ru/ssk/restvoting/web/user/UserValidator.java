@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class UserValidator implements Validator {
-//    private final UserRepository repository;
     private final UserDataJpaRepository repository;
 
     @Autowired

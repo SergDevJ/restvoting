@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,8 +18,10 @@ import ru.ssk.restvoting.util.exception.NotFoundException;
 import ru.ssk.restvoting.web.json.JsonUtil;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -29,7 +32,6 @@ import static ru.ssk.restvoting.UserTestData.admin;
 import static ru.ssk.restvoting.UserTestData.user;
 
 class RestaurantRestControllerTest extends AbstractControllerTest {
-
     private static final String REST_URL = RestaurantAdminRestController.REST_URL;
     private static final String REST_MENU_URL = MenuRestController.REST_URL;
 
@@ -105,7 +107,6 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonUtil.writeValue(newRestaurant)))
                 .andDo(print());
-
         Restaurant actual = readFromJson(result, Restaurant.class);
         int newId = actual.getId();
         newRestaurant.setId(newId);
@@ -132,13 +133,21 @@ class RestaurantRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getTodayMenu() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_MENU_URL + "/" + RESTAURANT1_ID +
-                                "?date=" + LocalDate.now())
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(REST_MENU_URL + "/" + RESTAURANT1_ID)
                         .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(MenuTestData.todayMenu, MenuItemDisplayImpl.class));
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)).andReturn();
+        List<MenuItemDisplayImpl> actual = readValuesFromMvcResult(result, MenuItemDisplayImpl.class);
+
+//        Since when converting a parameter of type java.sql.Date
+//        from JSON in readValuesFromMvcResult(), the 'hours' field is filled
+//        with the value of the current time zone offset, and the equals()
+//        method in the java.sql.Date class is not overridden and takes into account
+//        time in milliseconds when comparing, then for a correct comparison,
+//        one more conversion is needed to reset the 'hours' field.
+        actual = actual.stream().map(m -> new MenuItemDisplayImpl(m.getId(), m.getDishId(), m.getName(), m.getWeight(), m.getPrice(), java.sql.Date.valueOf(m.getDate().toString()))).collect(Collectors.toList());
+        assertThat(actual).usingFieldByFieldElementComparator().containsExactlyElementsOf(MenuTestData.todayMenu);
     }
 
     @Test

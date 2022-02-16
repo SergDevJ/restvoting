@@ -3,6 +3,7 @@ package ru.ssk.restvoting;
 import ru.ssk.restvoting.to.MenuItemDisplay;
 
 import java.beans.ConstructorProperties;
+import java.sql.Date;
 
 public class MenuItemDisplayImpl implements MenuItemDisplay {
     private Integer id;
@@ -10,14 +11,16 @@ public class MenuItemDisplayImpl implements MenuItemDisplay {
     private String name;
     private Float price;
     private Integer weight;
+    private Date date;
 
-    @ConstructorProperties({"id", "dishId", "name", "weight", "price"})
-    public MenuItemDisplayImpl(Integer id, Integer dishId, String name, Integer weight, Float price) {
+    @ConstructorProperties({"id", "dishId", "name", "weight", "price", "date"})
+    public MenuItemDisplayImpl(Integer id, Integer dishId, String name, Integer weight, Float price, Date date) {
         this.id = id;
         this.dishId = dishId;
         this.name = name;
         this.weight = weight;
         this.price = price;
+        this.date = date;
     }
 
     @Override
@@ -51,6 +54,11 @@ public class MenuItemDisplayImpl implements MenuItemDisplay {
     }
 
     @Override
+    public Date getDate() {
+        return date;
+    }
+
+    @Override
     public String toString() {
         return "MenuItemDisplayImpl{" +
                 "id=" + id +
@@ -58,6 +66,7 @@ public class MenuItemDisplayImpl implements MenuItemDisplay {
                 ", name='" + name +
                 ", price=" + price +
                 ", weight=" + weight +
+                ", date=" + date +
                 '}';
     }
 }

@@ -17,7 +17,6 @@ import javax.annotation.PostConstruct;
 import javax.persistence.PersistenceException;
 import java.sql.Date;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,16 +35,16 @@ class MenuServiceTest extends AbstractTest {
 
     @Test
     void getTodayMenu() {
-        List<MenuItemDisplay> actual = menuService.getAll(MenuTestData.RESTAURANT_ID, Date.valueOf(LocalDate.now())).stream().
-                map(mi -> new MenuItemDisplayImpl(mi.getId(), mi.getDishId(), mi.getName(), mi.getWeight(), mi.getPrice())).
+        List<MenuItemDisplay> actual = menuService.getAll(MenuTestData.RESTAURANT_ID, null).stream().
+                map(mi -> new MenuItemDisplayImpl(mi.getId(), mi.getDishId(), mi.getName(), mi.getWeight(), mi.getPrice(), mi.getDate())).
                 collect(Collectors.toList());
         assertThat(actual).usingFieldByFieldElementComparator().containsExactlyElementsOf(MenuTestData.todayMenu);
     }
 
     @Test
     void getMenuHistory() {
-        List<MenuItemDisplay> actual = menuService.getAll(MenuTestData.RESTAURANT_ID, java.sql.Date.valueOf("2021-05-01")).stream().
-                map(mi -> new MenuItemDisplayImpl(mi.getId(), mi.getDishId(), mi.getName(), mi.getWeight(), mi.getPrice())).
+        List<MenuItemDisplay> actual = menuService.getAll(MenuTestData.RESTAURANT_ID, Date.valueOf("2021-05-01")).stream().
+                map(mi -> new MenuItemDisplayImpl(mi.getId(), mi.getDishId(), mi.getName(), mi.getWeight(), mi.getPrice(), mi.getDate())).
                 collect(Collectors.toList());
         assertThat(actual).usingFieldByFieldElementComparator().containsExactlyElementsOf(MenuTestData.anyDateMenu);
     }

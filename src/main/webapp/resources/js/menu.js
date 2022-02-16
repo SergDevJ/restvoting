@@ -1,7 +1,5 @@
 const date = new Date();
-const RestaurantMenuAjaxUrl = "restaurant-menu/" +
-    document.getElementById("restaurantId").value +
-    "?date=" + date.toLocaleDateString('en-CA');
+const RestaurantMenuAjaxUrl = "restaurant-menu/" + document.getElementById("restaurantId").value;
 const MenuAjaxUrl = "admin/menu/";
 
 // https://stackoverflow.com/a/5064235/548473
@@ -15,19 +13,15 @@ const ctx = {
 function addMenuItem() {
     var form = $('#detailsForm');
     form.find(":input").val("");
-    document.getElementById("date").value = document.getElementById("menuDate").value;
     $("#editRow").modal();
 }
 
 function saveMenuItem() {
     var id = document.getElementById("id").value;
-    var d = date;
     var obj = {};
     obj["id"] = document.getElementById("id").value;
     obj["restaurantId"] = document.getElementById("restaurantId").value;
-    obj["date"] = "";
-    if (document.getElementById("date").value === "") obj["date"] = d.toLocaleDateString('en-CA')
-        else obj["date"] = document.getElementById("date").value;
+    obj["date"] = document.getElementById("date").value;
     obj["dishId"] = document.getElementById("dishList").value;
     obj["price"] = document.getElementById("price").value;
     var jsonData = JSON.stringify(obj);
@@ -66,7 +60,6 @@ $(function () {
             {
                 "data": "price"
             },
-
             {
                 "render": renderEditBtn,
                 "defaultContent": "",
@@ -77,6 +70,10 @@ $(function () {
                 "defaultContent": "",
                 "orderable": false
             },
+            {
+                "data": "date",
+                "visible": false
+            }
         ],
         "order": [
             [

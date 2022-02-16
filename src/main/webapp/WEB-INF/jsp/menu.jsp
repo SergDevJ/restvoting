@@ -29,9 +29,9 @@
                 <th><spring:message code="menu.price"/></th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
             </thead>
-
         </table>
     </div>
 </div>
@@ -47,6 +47,7 @@
                 <form id="detailsForm">
                     <input type="hidden" id="id" name="id">
                     <input type="hidden" id="dishId" name="dishId">
+                    <input type="hidden" id="date" name="date">
                     <div class="form-group">
                         <label for="dishList"><spring:message code="dish.caption"/></label>
                         <select id="dishList" name="dishList" class="form-control">
