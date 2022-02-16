@@ -92,6 +92,7 @@ public class GlobalControllerExceptionHandler {
     ResponseEntity<ErrorInfo> bindError(HttpServletRequest req, BindException e) {
         String[] details = e.getBindingResult().getFieldErrors().stream()
                 .map(messageSourceAccessor::getMessage)
+                .distinct()
                 .toArray(String[]::new);
         return logAndGetErrorInfo(req, e, ErrorType.VALIDATION_ERROR, details);
     }
