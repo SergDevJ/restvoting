@@ -12,7 +12,7 @@ import static ru.ssk.restvoting.util.ValidationUtil.getRootCause;
 
 @SpringJUnitWebConfig(classes = {WebAppInit.class, DataJpaConfig.class, CacheConfig.class,
         SystemConfig.class, WebSecurityConfig.class, WebConfig.class})
-@ActiveProfiles({"test", "hsqldb"})
+@ActiveProfiles({"test"})
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public abstract class AbstractTest {
     protected <T extends Throwable> void validateRootCause(Class<T> rootExceptionClass, Runnable test) {

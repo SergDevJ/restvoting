@@ -1,9 +1,5 @@
 package ru.ssk.restvoting.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -13,29 +9,13 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import java.io.IOException;
-import java.util.Properties;
 
 
 public class WebAppInit extends AbstractAnnotationConfigDispatcherServletInitializer {
-    private final String ACTIVE_PROFILE_DB_KEY = "profiles.db";
-    private final String ACTIVE_PROFILE_DB_DEFAULT_VALUE = "hsqldb";
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
-        servletContext.setInitParameter("spring.profiles.default", ACTIVE_PROFILE_DB_DEFAULT_VALUE);
-        String dbProfile;
-        try {
-            Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource("application.properties"));
-            dbProfile = properties.getProperty(ACTIVE_PROFILE_DB_KEY, ACTIVE_PROFILE_DB_DEFAULT_VALUE);
-            servletContext.setInitParameter("spring.profiles.active", dbProfile);
-            log.info("Set active profile to '{}'", dbProfile);
-        } catch (IOException e) {
-            servletContext.setInitParameter("spring.profiles.active", ACTIVE_PROFILE_DB_DEFAULT_VALUE);
-            log.error("Error reading 'application.properties' file. Active profile set to default");
-        }
     }
 
     @Override

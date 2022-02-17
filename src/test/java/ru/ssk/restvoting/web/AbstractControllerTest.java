@@ -16,7 +16,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 
 @SpringJUnitWebConfig(classes = {WebAppInit.class, DataJpaConfig.class, CacheConfig.class,
         SystemConfig.class, WebSecurityConfig.class, WebConfig.class})
-@ActiveProfiles({"test", "hsqldb"})
+@ActiveProfiles({"test"})
 @Transactional
 public abstract class AbstractControllerTest {
 
