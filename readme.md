@@ -106,9 +106,11 @@ _http://localhost:8080/restvoting_
 #### Get menu for voting (cacheable)
 `curl -s "http://localhost:8080/restvoting/rest/restaurant-menu/1000/voting" -u User3:abcd`
 
-#### Get menu history
-`curl -s "http://localhost:8080/restvoting/rest/restaurant-menu/1000/" -u User3:abcd`
+#### Get today menu
+`curl -s "http://localhost:8080/restvoting/rest/restaurant-menu/1000" -u User3:abcd`
 
+#### Get menu history
+`curl -s "http://localhost:8080/restvoting/rest/restaurant-menu/1000/history?date=2021-05-01" -u User1:2222`
 
 
 ### _Dishes_:

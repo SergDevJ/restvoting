@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.ssk.restvoting.service.MenuService;
 import ru.ssk.restvoting.to.MenuItemDisplay;
 
+import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -34,5 +35,13 @@ public class MenuRestController {
     public List<MenuItemDisplay> getRestaurantMenu(@PathVariable("restaurantId") int id) {
         log.info("get menu for restaurant with id={}", id);
         return service.getAll(id, null);
+    }
+
+    @GetMapping(value = "/{restaurantId}/history")
+    @ResponseStatus(HttpStatus.OK)
+    public List<MenuItemDisplay> getRestaurantMenuHistory(@PathVariable("restaurantId") int id,
+                                                          @RequestParam(value = "date") Date date) {
+        log.info("get menu for restaurant with id={} and date={}", id, date);
+        return service.getAll(id, date);
     }
 }
