@@ -52,6 +52,7 @@
             <a href="http://www.postgresql.org/">PostgreSQL</a>,
             <a href="http://junit.org/">JUnit</a>,
             <a href="http://hamcrest.org/JavaHamcrest/">Hamcrest</a>,
+            <a href="https://swagger.io/resources/open-api/">Swagger</a>
         </div>
     </div>
 </div>
