@@ -5,7 +5,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.format.FormatterRegistry;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -21,7 +20,6 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-import ru.ssk.restvoting.web.converter.LocalDateTimeConverter;
 import ru.ssk.restvoting.web.json.JacksonObjectMapper;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -92,10 +90,4 @@ public class WebConfig implements WebMvcConfigurer {
         jsonConverter.setObjectMapper(JacksonObjectMapper.getMapper());
         converters.add(jsonConverter);
     }
-
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new LocalDateTimeConverter());
-    }
-
 }
