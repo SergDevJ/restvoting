@@ -14,9 +14,9 @@
 * Voting history and menus are stored, filtering by date is possible.
 
 _Work with the system is implemented via UI (via AJAX) and via REST interface with basic authorization.
-The time until which voting is possible is set in the "system.properties" settings file. The voting date and time is defined as the current date and time on the server.
+The time until which voting is possible is set in the "application.properties" settings file. The voting date and time is defined as the current date and time on the server.
 Spring caching is used - caching a request for a list of restaurants, menu of the current day when voting.
-The "Admin" user cannot be deleted. When registering / editing a user, the uniqueness of the name (case-insensitive) and email is checked.
+The "Admin", "User1" and "User2" users cannot be deleted and modified. When registering / editing a user, the uniqueness of the name (case-insensitive) and email is checked.
 Implemented localization of the user interface with a choice of language from the list on the main page.
 The REST portion of the interface is covered with JUnit tests using Spring MVC Test and Spring Security Test._
 
