@@ -1,16 +1,18 @@
 package ru.ssk.restvoting.util.exception;
 
+import org.springframework.http.HttpStatus;
+
 public class ErrorInfo {
     private final CharSequence url;
     private final String messageText;
     private final String[] details;
-    private final ErrorType errorType;
+    private final HttpStatus status;
 
-    public ErrorInfo(CharSequence url, String messageText, String[] details, ErrorType errorType) {
+    public ErrorInfo(CharSequence url, String messageText, String[] details, HttpStatus status) {
         this.url = url;
         this.messageText = messageText;
         this.details = details;
-        this.errorType = errorType;
+        this.status = status;
     }
 
     public CharSequence getUrl() {
@@ -25,7 +27,7 @@ public class ErrorInfo {
         return details;
     }
 
-    public ErrorType getErrorType() {
-        return errorType;
+    public HttpStatus getStatus() {
+        return status;
     }
 }
