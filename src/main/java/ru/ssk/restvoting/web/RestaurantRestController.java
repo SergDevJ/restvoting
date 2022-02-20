@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.ssk.restvoting.model.Restaurant;
 import ru.ssk.restvoting.service.RestaurantService;
+import ru.ssk.restvoting.to.RestaurantVoteTo;
 
 import java.util.List;
 
@@ -26,6 +27,13 @@ public class RestaurantRestController {
     List<Restaurant> getAll() {
         log.info("getAll");
         return service.getAll();
+    }
+
+    @GetMapping(value = "/with-vote")
+    @ResponseStatus(HttpStatus.OK)
+    List<RestaurantVoteTo> getAllWithVote() {
+        log.info("getAllWithVote");
+        return service.getAllWithUserVote();
     }
 
     @GetMapping(value = "/{id}")

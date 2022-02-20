@@ -11,6 +11,7 @@ import ru.ssk.restvoting.model.Vote;
 import ru.ssk.restvoting.repository.RestaurantDataJpaRepository;
 import ru.ssk.restvoting.repository.VoteDataJpaRepository;
 import ru.ssk.restvoting.to.RestaurantVoteTo;
+import ru.ssk.restvoting.util.SecurityUtil;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -63,8 +64,8 @@ public class RestaurantService {
         return crudRepository.getById(id);
     }
 
-    public List<RestaurantVoteTo> getAllWithUserVote(int userId) {
-        return getAllWithUserVote(userId, java.sql.Date.valueOf(LocalDate.now()));
+    public List<RestaurantVoteTo> getAllWithUserVote() {
+        return getAllWithUserVote(SecurityUtil.getAuthUserId(), java.sql.Date.valueOf(LocalDate.now()));
     }
 
     public List<RestaurantVoteTo> getAllWithUserVote(int userId, java.sql.Date voteDate) {

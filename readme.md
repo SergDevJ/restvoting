@@ -17,8 +17,7 @@ _Work with the system is implemented via REST interface with basic authorization
 The time until which voting is possible is set in the "application.properties" settings file. The voting date and time is defined as the current date and time on the server.
 Spring caching is used - caching a request for a list of restaurants, menu of the current day when voting.
 The "Admin", "User1" and "User2" users cannot be deleted and modified. When registering / editing a user, the uniqueness of the name (case-insensitive) and email is checked.
-Implemented localization of the user interface with a choice of language from the list on the main page.
-The REST portion of the interface is covered with JUnit tests using Spring MVC Test and Spring Security Test._
+The portion of the service layer and of the REST interface is covered with JUnit tests using Spring MVC Test and Spring Security Test._
 
 ###To run the application
 You need to package the source code first: _mvn package_
@@ -86,6 +85,9 @@ _Built-in users accounts: Admin (1111), User1 (2222), User2 (3333), User3 (abcd)
 
 #### get All Restaurants
 `curl -s http://localhost:8080/restvoting/rest/restaurants -u Admin:1111`
+
+#### get All Restaurants with user vote
+`curl -s http://localhost:8080/restvoting/rest/restaurants/with-vote -u User2:3333`
 
 #### get Restaurant 1000
 `curl -s http://localhost:8080/restvoting/rest/restaurants/1001 -u Admin:1111`
