@@ -1,8 +1,6 @@
 package ru.ssk.restvoting.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.ssk.restvoting.application.Settings;
@@ -24,7 +22,7 @@ import static ru.ssk.restvoting.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class VoteService {
-    private final String TOO_LATE_VOTE_MSG_CODE = "exception.tooLateVote";
+    private final String TOO_LATE_VOTE_MSG = "Voting is not possible after %s";
 
     public static final String FILTER_DEFAULT_START_DATE = "1900-01-01";
     public static final String FILTER_DEFAULT_END_DATE = "2100-01-01";
@@ -32,18 +30,15 @@ public class VoteService {
     private final VoteDataJpaRepository crudRepository;
     private final UserService userService;
     private final RestaurantService restaurantService;
-    private final ReloadableResourceBundleMessageSource messageSource;
     private final Settings systemSettings;
 
     @Autowired
     public VoteService(VoteDataJpaRepository crudRepository, UserService userService,
                        RestaurantService restaurantService,
-                       ReloadableResourceBundleMessageSource messageSource,
                        Settings systemSettings) {
         this.crudRepository = crudRepository;
         this.userService = userService;
         this.restaurantService = restaurantService;
-        this.messageSource = messageSource;
         this.systemSettings = systemSettings;
     }
 
@@ -61,9 +56,7 @@ public class VoteService {
         LocalDateTime voteDateTime = LocalDateTime.now();
         LocalTime voteLastTime = systemSettings.getVoteLastTime();
         if (voteDateTime.toLocalTime().isAfter(voteLastTime)) {
-            String msg = messageSource.getMessage(TOO_LATE_VOTE_MSG_CODE, new Object[]{voteLastTime.toString()}, "Voting is not possible after {0}",
-                    LocaleContextHolder.getLocale());
-            throw new TooLateVoteException(msg);
+            throw new TooLateVoteException(String.format(TOO_LATE_VOTE_MSG, voteLastTime));
         }
         User user = userService.getReference(SecurityUtil.getAuthUserId());
         Restaurant restaurant = restaurantService.getReference(restaurantId);

@@ -3,8 +3,6 @@ package ru.ssk.restvoting.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,19 +23,17 @@ import static ru.ssk.restvoting.util.ValidationUtil.checkNotFoundWithId;
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService implements UserDetailsService {
-    private final String CANT_DELETE_USER_MSG_CODE = "exception.user.cantDeleteUser";
-    private final String CANT_UPDATE_USER_MSG_CODE = "exception.user.cantUpdateUser";
+    private final String CANT_DELETE_USER_MSG = "User cannot be deleted";
+    private final String CANT_UPDATE_USER_MSG = "User cannot be updated";
     private final int MAX_PREDEFINED_USER_ID = 1002;
 
     private final UserDataJpaRepository crudRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ReloadableResourceBundleMessageSource messageSource;
 
     @Autowired
-    public UserService(UserDataJpaRepository userRepository, PasswordEncoder passwordEncoder, ReloadableResourceBundleMessageSource messageSource) {
+    public UserService(UserDataJpaRepository userRepository, PasswordEncoder passwordEncoder) {
         this.crudRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.messageSource = messageSource;
     }
 
     public User get(int id) {
@@ -75,13 +71,13 @@ public class UserService implements UserDetailsService {
 
     private void checkDeleteRestrictions(int userId) {
         if (userId <= MAX_PREDEFINED_USER_ID) {
-          throw new UserDeleteViolationException(messageSource.getMessage(CANT_DELETE_USER_MSG_CODE, null, LocaleContextHolder.getLocale()));
+          throw new UserDeleteViolationException(CANT_DELETE_USER_MSG);
         }
     }
 
     private void checkUpdateRestrictions(int userId) {
         if (userId <= MAX_PREDEFINED_USER_ID) {
-            throw new UserUpdateViolationException(messageSource.getMessage(CANT_UPDATE_USER_MSG_CODE, null, LocaleContextHolder.getLocale()));
+            throw new UserUpdateViolationException(CANT_UPDATE_USER_MSG);
         }
     }
 
