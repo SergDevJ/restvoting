@@ -13,10 +13,9 @@ import java.sql.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = {MenuRestController.URL, MenuRestController.REST_URL},
+@RequestMapping(value = { MenuRestController.REST_URL},
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class MenuRestController {
-    static final String URL = "/restaurant-menu";
     static final String REST_URL = "/rest/restaurant-menu";
     private static final Logger log = LoggerFactory.getLogger(MenuRestController.class);
 

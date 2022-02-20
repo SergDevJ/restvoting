@@ -16,12 +16,10 @@ import ru.ssk.restvoting.util.VoteUtil;
 import java.net.URI;
 
 import static ru.ssk.restvoting.web.VotingRestController.REST_URL;
-import static ru.ssk.restvoting.web.VotingRestController.URL;
 
 @RestController
-@RequestMapping(value = {URL, REST_URL}, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = { REST_URL}, produces = MediaType.APPLICATION_JSON_VALUE)
 public class VotingRestController {
-    static final String URL = "/votes";
     static final String REST_URL = "/rest/votes";
     private static final Logger log = LoggerFactory.getLogger(VotingRestController.class);
 

@@ -21,9 +21,8 @@ import java.util.List;
 import static ru.ssk.restvoting.util.ValidationUtil.assureIdConsistent;
 
 @RestController
-@RequestMapping(value = {UserRestController.URL, UserRestController.REST_URL}, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = { UserRestController.REST_URL}, produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserRestController {
-    static final String URL = "/admin/users";
     static final String REST_URL = "/rest/admin/users";
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -82,6 +81,4 @@ public class UserRestController {
         log.info("delete with id={}", id);
         service.delete(id);
     }
-
-
 }

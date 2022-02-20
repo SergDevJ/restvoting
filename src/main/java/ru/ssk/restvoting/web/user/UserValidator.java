@@ -41,25 +41,24 @@ public class UserValidator implements Validator {
         checkUser(user, dbUser, errors, "name", GlobalControllerExceptionHandler.EXCEPTION_DUPLICATE_USER_NAME);
     }
 
-    private void checkUser(User user, User dbUser, Errors errors, String field, String errorCode) {
+    private void checkUser(User user, User dbUser, Errors errors, String field, String errorMessage) {
         if (dbUser != null) {
             Assert.notNull(request, "HttpServletRequest missed");
             if (request.getMethod().equals("PUT")) {
                 // it is ok, if update ourself
                 int dbId = dbUser.getId();
                 if (user.getId() != null && dbId != user.getId()) {
-                    errors.rejectValue(field, errorCode);
+                    errors.rejectValue(field, null, errorMessage);
                 }
 
                 // workaround for update with nullable id user
                 String requestURI = request.getRequestURI();
                 if (!requestURI.endsWith("/" + dbId) && dbId != SecurityUtil.getAuthUserId()) {
-                    errors.rejectValue(field, errorCode);
+                    errors.rejectValue(field, null, errorMessage);
                 }
             } else if (request.getMethod().equals("POST")) {
-                errors.rejectValue(field, errorCode);
+                errors.rejectValue(field, null, errorMessage);
             }
         }
     }
-
 }

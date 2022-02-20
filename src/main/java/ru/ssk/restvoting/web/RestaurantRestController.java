@@ -12,10 +12,9 @@ import ru.ssk.restvoting.service.RestaurantService;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = {RestaurantRestController.URL, RestaurantRestController.REST_URL},
+@RequestMapping(value = { RestaurantRestController.REST_URL},
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantRestController {
-    static final String URL = "/restaurants";
     static final String REST_URL = "/rest/restaurants";
     private final Logger log = LoggerFactory.getLogger(getClass());
 

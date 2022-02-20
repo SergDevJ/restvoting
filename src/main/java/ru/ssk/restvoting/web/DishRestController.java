@@ -21,11 +21,10 @@ import static ru.ssk.restvoting.util.ValidationUtil.checkNew;
 
 @RestController
 @Api(description = "Endpoints for manage Dishes (for users with admin rights)", produces = "application/json")
-@RequestMapping(value = { DishRestController.REST_URL, DishRestController.URL},
+@RequestMapping(value = { DishRestController.REST_URL},
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class DishRestController {
     static final String REST_URL = "/rest/admin/dishes";
-    static final String URL = "/admin/dishes";
     private static final Logger log = LoggerFactory.getLogger(DishRestController.class);
 
     @Autowired

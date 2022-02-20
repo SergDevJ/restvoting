@@ -30,11 +30,10 @@ import java.util.Objects;
 import static ru.ssk.restvoting.util.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(value = {ProfileRestController.URL, ProfileRestController.REST_URL},
+@RequestMapping(value = { ProfileRestController.REST_URL},
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProfileRestController {
     private static final Logger log = LoggerFactory.getLogger(ProfileRestController.class);
-    static final String URL = "/profile";
     static final String REST_URL = "/rest/profile";
 
     @Autowired

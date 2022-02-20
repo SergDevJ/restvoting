@@ -20,10 +20,9 @@ import static ru.ssk.restvoting.util.ValidationUtil.assureIdConsistent;
 
 
 @RestController
-@RequestMapping(value = {MenuItemAdminRestController.URL, MenuItemAdminRestController.REST_URL},
+@RequestMapping(value = { MenuItemAdminRestController.REST_URL},
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class MenuItemAdminRestController {
-    static final String URL = "/admin/menu";
     static final String REST_URL = "/rest/admin/menu";
     private static final Logger log = LoggerFactory.getLogger(MenuItemAdminRestController.class);
 

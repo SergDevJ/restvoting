@@ -20,11 +20,10 @@ import java.util.List;
 import static ru.ssk.restvoting.util.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(value = {RestaurantAdminRestController.URL, RestaurantAdminRestController.REST_URL},
+@RequestMapping(value = { RestaurantAdminRestController.REST_URL},
         produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(description = "Endpoints for manage Restaurants (for users with admin rights)", produces = "application/json")
 public class RestaurantAdminRestController {
-    static final String URL = "/admin/restaurants";
     static final String REST_URL = "/rest/admin/restaurants";
     private final Logger log = LoggerFactory.getLogger(getClass());
 
