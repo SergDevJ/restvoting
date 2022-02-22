@@ -19,7 +19,7 @@ Spring caching is used - caching a request for a list of restaurants, menu of th
 The "Admin", "User1" and "User2" users cannot be deleted and modified. When registering / editing a user, the uniqueness of the name (case-insensitive) and email is checked.
 The portion of the service layer and of the REST interface is covered with JUnit tests using Spring MVC Test and Spring Security Test._
 
-###To run the application
+### To run the application
 You need to package the source code first: _mvn package_
 
 Then deploy it in Apache Tomcat by copying the .war to the deploy folder of Apache Tomcat.
@@ -29,8 +29,7 @@ _http://localhost:8080/restvoting_
 
 ### __['Voting system' on HEROKU](http://restvoting.herokuapp.com/)__
 
-
-###Restaurant voting system API documentation is available via Swagger:
+### Restaurant voting system API documentation is available via Swagger:
 - To launch Swagger UI  hit url _http://localhost:8080/restvoting/swagger-ui/index.html_ from a web browser
 - To access 'swagger.json' hit _http://localhost:8080/restvoting/v2/api-docs_  
 
