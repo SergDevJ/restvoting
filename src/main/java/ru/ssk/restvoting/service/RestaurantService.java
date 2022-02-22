@@ -73,13 +73,13 @@ public class RestaurantService {
         Vote findVote = voteRepository.findByUserAndDate(userService.getReference(userId), voteDate).orElse(null);
         if (findVote == null) {
             return restaurants.stream().
-                    map(r -> new RestaurantVoteTo(r.getId(), r.getName(), r.getEmail(), r.getAddress(), null, false)).
+                    map(r -> new RestaurantVoteTo(r.getId(), r.getName(), r.getEmail(), r.getAddress(), null)).
                     collect(Collectors.toList());
         } else {
-            return restaurants.stream().map(r ->
-                    new RestaurantVoteTo(r.getId(), r.getName(), r.getEmail(), r.getAddress(),
-                            r.getId().equals(findVote.getRestaurant().getId()) ? findVote.getId() : null,
-                            r.getId().equals(findVote.getRestaurant().getId()))).collect(Collectors.toList());
+            return restaurants.stream().
+                    map(r -> new RestaurantVoteTo(r.getId(), r.getName(), r.getEmail(), r.getAddress(),
+                            r.getId().equals(findVote.getRestaurant().getId()) ? findVote.getId() : null)).
+                    collect(Collectors.toList());
         }
     }
 }
